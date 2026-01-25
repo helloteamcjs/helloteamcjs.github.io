@@ -12,7 +12,7 @@
 
     <meta property="og:title" content="작가, 디자이너, 연구자 정진성 chungjinsung">
     <meta property="og:description" content="작가, 디자이너, 연구자 정진성의 포트폴리오 웹 사이트.">
-    <meta property="og:image" content="images/graphic/circlelovestriangle.webp">
+    <meta property="og:image" content="https://chungjinsung.com/images/graphic/circlelovestriangle.webp">
     <meta property="og:url" content="https://chungjinsung.com">
     <meta property="og:type" content="website">
 
@@ -317,6 +317,7 @@
             }
         }
     </style>
+    <meta name="google-site-verification" content="MAw_TRTIEkCdbRmRVjobQWYndcp9qjqIYOvTlXQu2YA" />
 </head>
 
 <body>
@@ -421,12 +422,10 @@
                                 ? `<div class="video-item"><iframe class="auto-video" src="https://www.youtube.com/embed/${item.id}${params}" allowfullscreen></iframe></div>`
                                 : `<div class="video-item"><a href="https://youtu.be/${item.id}${item.start ? '?t=' + item.start : ''}" target="_blank" class="video-link"><img src="https://img.youtube.com/vi/${item.id}/maxresdefault.jpg" alt="${item.caption || ''}"></a></div>`;
                         } else if (key === 'web' || key === 'construct' || key === 'show') {
-                            // [수정] alt 속성 추가
                             const imgHtml = `<img src="${item.src}" class="work-img" alt="${item.caption || ''}">`;
                             const linkedImg = item.url ? `<a href="${item.url}" target="_blank">${imgHtml}</a>` : imgHtml;
                             html = `<div class="work-item" style="max-width: 800px;">${linkedImg}<p class="work-caption">${item.caption}</p></div>`;
                         } else {
-                            // [수정] alt 속성 추가
                             html = `<div class="work-item"><img src="${item.src}" class="work-img" alt="${item.caption || ''}"><p class="work-caption">${item.caption}</p></div>`;
                         }
                         container.innerHTML += html;
