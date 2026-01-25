@@ -36,7 +36,7 @@
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-gothic-coding.css" rel="stylesheet">
     <style>
-        /* [전역 스타일 및 조판 규칙] */
+        /* [전역 스타일 및 복제 방지] */
         body {
             margin: 0;
             padding: 0;
@@ -44,6 +44,18 @@
             background-color: #ffffff;
             word-break: keep-all;
             overflow-wrap: break-word;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            cursor: default;
+        }
+
+        img {
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -o-user-drag: none;
         }
 
         p,
@@ -108,6 +120,21 @@
 
         .top-email.selected {
             color: #0000ff !important;
+        }
+
+        /* [하단 저작권 스타일] */
+        .modal-footer {
+            grid-column: 1 / -1;
+            /* 그리드 레이아웃 대응 */
+            width: 100%;
+            margin-top: 100px;
+            padding-bottom: 120px;
+            /* 충분한 하단 여백 확보 */
+            font-size: 0.8rem;
+            color: #000000 !important;
+            text-decoration: none !important;
+            pointer-events: none;
+            text-align: left;
         }
 
         /* [사이드바 조판] */
@@ -222,7 +249,7 @@
             line-height: 1.6;
             color: #000000;
             text-transform: lowercase;
-            padding: 120px 60px;
+            padding: 120px 60px 0 60px;
             margin: 0;
             box-sizing: border-box;
             text-align: left;
@@ -238,7 +265,7 @@
             gap: 100px;
             width: 100%;
             max-width: 1200px;
-            padding: 120px 60px;
+            padding: 120px 60px 0 60px;
             margin: 0;
             box-sizing: border-box;
         }
@@ -303,7 +330,11 @@
             .show-content {
                 grid-template-columns: 1fr;
                 gap: 40px;
-                padding: 120px 20px 60px 20px;
+                padding: 120px 20px 0 20px;
+            }
+
+            .modal-footer {
+                padding-bottom: 80px;
             }
 
             .top-email {
@@ -402,14 +433,21 @@
     <script type="module">
         import { WORKS_DATA } from './js/data.js';
 
+        // [복제 방지 스크립트]
+        window.addEventListener('contextmenu', e => e.preventDefault());
+        window.addEventListener('selectstart', e => e.preventDefault());
+        window.addEventListener('dragstart', e => e.preventDefault());
+
         function renderSystem() {
+            const footerHtml = `<div class="modal-footer">© 2026 chungjinsung</div>`;
+
             Object.keys(WORKS_DATA).forEach(key => {
                 const container = document.getElementById(`${key}-render`);
                 if (!container) return;
 
                 if (key === 'profile') {
                     const d = WORKS_DATA.profile;
-                    container.innerHTML = `<div class="column column-list"><span class="blue">작가, 디자이너, 연구자 이력\npainter, designer, researcher cv</span>\n\n${d.cv}</div><div class="column column-list"><span class="blue">전시경력\nexhibition</span>\n\n${d.exhibition}</div><div class="column column-intro">${d.statement}</div>`;
+                    container.innerHTML = `<div class="column column-list"><span class="blue">작가, 디자이너, 연구자 이력\npainter, designer, researcher cv</span>\n\n${d.cv}</div><div class="column column-list"><span class="blue">전시경력\nexhibition</span>\n\n${d.exhibition}</div><div class="column column-intro">${d.statement}</div>` + footerHtml;
                 } else {
                     WORKS_DATA[key].forEach(item => {
                         let html = '';
@@ -430,6 +468,8 @@
                         }
                         container.innerHTML += html;
                     });
+                    // 아이템 렌더링 후 하단 저작권 추가
+                    container.innerHTML += footerHtml;
                 }
             });
         }
@@ -445,10 +485,17 @@
         }, { root: document.getElementById('video-scroll-container'), threshold: 0.6 });
 
         window.toggleIntro = (lang) => { const el = document.getElementById(lang === 'kor' ? 'intro-kor' : 'intro-eng'); el.classList.toggle('active'); };
+
         window.openModal = (name) => {
             const el = document.getElementById(`${name}-modal`);
-            if (el) { el.classList.add('active'); document.querySelector('canvas').classList.add('modal-active'); if (name === 'video') setTimeout(() => document.querySelectorAll('.auto-video').forEach(v => videoObserver.observe(v)), 100); }
+            if (el) {
+                el.classList.add('active');
+                document.querySelector('canvas').classList.add('modal-active');
+                document.body.style.cursor = 'default';
+                if (name === 'video') setTimeout(() => document.querySelectorAll('.auto-video').forEach(v => videoObserver.observe(v)), 100);
+            }
         };
+
         window.closeModal = (id) => {
             const el = document.getElementById(id); if (el) {
                 el.classList.remove('active'); document.querySelector('canvas').classList.remove('modal-active');

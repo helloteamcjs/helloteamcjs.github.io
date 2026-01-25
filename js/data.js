@@ -62,12 +62,12 @@ wess, 서울.
     ],
     web: [
         {
-            src: "images/web/doyouhavethetime.webp",
+            src: "images/web/time.webp",
             caption: "do you have the time? (손목 시계 문자판 가독성과 판독성 비교 실험), 2024.<br>co-worker: 이경미",
             url: "https://doyouhavethetime.vercel.app/"
         },
         {
-            src: "images/web/doyouhavethetime.webp",
+            src: "images/web/thisweb.webp",
             caption: "당신이 보고 있는 것, 2026.<br>co-worker: google gemini",
             url: "https://chungjinsung.com/"
         }
