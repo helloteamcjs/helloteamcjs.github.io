@@ -4,12 +4,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="format-detection" content="telephone=no, address=korea, seoul, email=no">
-    <title>chungjinsung</title>
-    <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-gothic-coding.css" rel="stylesheet">
+    <meta name="format-detection" content="telephone=no, address=no, email=no">
+
+    <title>작가, 디자이너, 연구자 정진성 chungjinsung</title>
+    <meta name="description" content="작가, 디자이너, 연구자 정진성의 포트폴리오 웹 사이트. 타이포그래피와 언어, 이미지의 관계를 탐구한다.">
+    <link rel="canonical" href="https://chungjinsung.com">
+
+    <meta property="og:title" content="작가, 디자이너, 연구자 정진성 chungjinsung">
+    <meta property="og:description" content="작가, 디자이너, 연구자 정진성의 포트폴리오 웹 사이트.">
+    <meta property="og:image" content="images/graphic/circlelovestriangle.webp">
+    <meta property="og:url" content="https://chungjinsung.com">
+    <meta property="og:type" content="website">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="작가, 디자이너, 연구자 정진성 chungjinsung">
+    <meta name="twitter:description" content="작가, 디자이너, 연구자 정진성의 포트폴리오 웹 사이트.">
+    <meta name="twitter:image" content="https://chungjinsung.com/images/graphic/circlelovestriangle.webp">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "정진성",
+      "alternateName": "Chung Jinsung",
+      "jobTitle": "Artist, Designer, Researcher",
+      "url": "https://chungjinsung.com",
+      "description": "작가, 디자이너, 연구자 정진성의 포트폴리오. 타이포그래피와 언어, 이미지의 관계를 탐구한다."
+    }
+    </script>
+
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-gothic-coding.css" rel="stylesheet">
     <style>
-        /* [1. 전역 스타일 및 조판 규칙] */
+        /* [전역 스타일 및 조판 규칙] */
         body {
             margin: 0;
             padding: 0;
@@ -46,7 +73,7 @@
             font-size: 0.85rem;
         }
 
-        /* [2. 타이포그래피 시스템] */
+        /* [타이포그래피 시스템] */
         .link-style,
         a,
         .top-email,
@@ -83,7 +110,7 @@
             color: #0000ff !important;
         }
 
-        /* [3. 사이드바 조판] */
+        /* [사이드바 조판] */
         .sidebar {
             position: fixed;
             left: 60px;
@@ -140,7 +167,7 @@
             opacity: 1;
         }
 
-        /* [4. 모달 시스템 및 정렬] */
+        /* [모달 시스템 및 정렬] */
         .modal {
             position: fixed;
             top: 0;
@@ -185,7 +212,6 @@
             text-transform: lowercase;
         }
 
-        /* 갤러리형 (3단 그리드): drawing, painting, graphic */
         .modal-content {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -203,7 +229,6 @@
             align-items: start;
         }
 
-        /* 단독 나열형 (1단 세로): video, web, construct, show */
         .video-content,
         .web-content,
         .construct-content,
@@ -330,7 +355,6 @@
             <div class="modal-content" id="profile-render"></div>
         </div>
     </div>
-
     <div id="drawing-modal" class="modal"><button class="modal-close"
             onclick="closeModal('drawing-modal')">close</button>
         <div class="modal-scroll-area">
@@ -349,7 +373,6 @@
             <div class="modal-content" id="graphic-render"></div>
         </div>
     </div>
-
     <div id="video-modal" class="modal"><button class="modal-close" onclick="closeModal('video-modal')">close</button>
         <div class="modal-scroll-area" id="video-scroll-container">
             <div class="video-content" id="video-render"></div>
@@ -396,15 +419,15 @@
 
                             html = item.type === 'auto'
                                 ? `<div class="video-item"><iframe class="auto-video" src="https://www.youtube.com/embed/${item.id}${params}" allowfullscreen></iframe></div>`
-                                : `<div class="video-item"><a href="https://youtu.be/${item.id}${item.start ? '?t=' + item.start : ''}" target="_blank" class="video-link"><img src="https://img.youtube.com/vi/${item.id}/maxresdefault.jpg"></a></div>`;
+                                : `<div class="video-item"><a href="https://youtu.be/${item.id}${item.start ? '?t=' + item.start : ''}" target="_blank" class="video-link"><img src="https://img.youtube.com/vi/${item.id}/maxresdefault.jpg" alt="${item.caption || ''}"></a></div>`;
                         } else if (key === 'web' || key === 'construct' || key === 'show') {
-                            // [정리] 단독 나열형 (800px 최적화)
-                            const imgHtml = `<img src="${item.src}" class="work-img">`;
+                            // [수정] alt 속성 추가
+                            const imgHtml = `<img src="${item.src}" class="work-img" alt="${item.caption || ''}">`;
                             const linkedImg = item.url ? `<a href="${item.url}" target="_blank">${imgHtml}</a>` : imgHtml;
                             html = `<div class="work-item" style="max-width: 800px;">${linkedImg}<p class="work-caption">${item.caption}</p></div>`;
                         } else {
-                            // [정리] 갤러리형 (3단 그리드 기본)
-                            html = `<div class="work-item"><img src="${item.src}" class="work-img"><p class="work-caption">${item.caption}</p></div>`;
+                            // [수정] alt 속성 추가
+                            html = `<div class="work-item"><img src="${item.src}" class="work-img" alt="${item.caption || ''}"><p class="work-caption">${item.caption}</p></div>`;
                         }
                         container.innerHTML += html;
                     });
