@@ -184,6 +184,7 @@
             text-transform: lowercase;
         }
 
+        /* 갤러리형 (3단 그리드): drawing, painting, graphic */
         .modal-content {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -201,8 +202,11 @@
             align-items: start;
         }
 
+        /* 단독 나열형 (1단 세로): video, web, construct, show */
         .video-content,
-        .web-content {
+        .web-content,
+        .construct-content,
+        .show-content {
             display: flex;
             flex-direction: column;
             gap: 100px;
@@ -268,7 +272,9 @@
 
             .modal-content,
             .video-content,
-            .web-content {
+            .web-content,
+            .construct-content,
+            .show-content {
                 grid-template-columns: 1fr;
                 gap: 40px;
                 padding: 120px 20px 60px 20px;
@@ -323,6 +329,7 @@
             <div class="modal-content" id="profile-render"></div>
         </div>
     </div>
+
     <div id="drawing-modal" class="modal"><button class="modal-close"
             onclick="closeModal('drawing-modal')">close</button>
         <div class="modal-scroll-area">
@@ -341,6 +348,7 @@
             <div class="modal-content" id="graphic-render"></div>
         </div>
     </div>
+
     <div id="video-modal" class="modal"><button class="modal-close" onclick="closeModal('video-modal')">close</button>
         <div class="modal-scroll-area" id="video-scroll-container">
             <div class="video-content" id="video-render"></div>
@@ -354,12 +362,12 @@
     <div id="construct-modal" class="modal"><button class="modal-close"
             onclick="closeModal('construct-modal')">close</button>
         <div class="modal-scroll-area">
-            <div class="modal-content" id="construct-render"></div>
+            <div class="construct-content" id="construct-render"></div>
         </div>
     </div>
     <div id="show-modal" class="modal"><button class="modal-close" onclick="closeModal('show-modal')">close</button>
         <div class="modal-scroll-area">
-            <div class="modal-content" id="show-render"></div>
+            <div class="show-content" id="show-render"></div>
         </div>
     </div>
 
@@ -381,7 +389,6 @@
                     WORKS_DATA[key].forEach(item => {
                         let html = '';
                         if (key === 'video') {
-                            // [수정] 구간 재생 파라미터 처리 로직
                             let params = `?enablejsapi=1`;
                             if (item.start !== undefined) params += `&start=${item.start}`;
                             if (item.end !== undefined) params += `&end=${item.end}`;
@@ -389,11 +396,13 @@
                             html = item.type === 'auto'
                                 ? `<div class="video-item"><iframe class="auto-video" src="https://www.youtube.com/embed/${item.id}${params}" allowfullscreen></iframe></div>`
                                 : `<div class="video-item"><a href="https://youtu.be/${item.id}${item.start ? '?t=' + item.start : ''}" target="_blank" class="video-link"><img src="https://img.youtube.com/vi/${item.id}/maxresdefault.jpg"></a></div>`;
-                        } else if (key === 'web') {
+                        } else if (key === 'web' || key === 'construct' || key === 'show') {
+                            // [정리] 단독 나열형 (800px 최적화)
                             const imgHtml = `<img src="${item.src}" class="work-img">`;
                             const linkedImg = item.url ? `<a href="${item.url}" target="_blank">${imgHtml}</a>` : imgHtml;
                             html = `<div class="work-item" style="max-width: 800px;">${linkedImg}<p class="work-caption">${item.caption}</p></div>`;
                         } else {
+                            // [정리] 갤러리형 (3단 그리드 기본)
                             html = `<div class="work-item"><img src="${item.src}" class="work-img"><p class="work-caption">${item.caption}</p></div>`;
                         }
                         container.innerHTML += html;

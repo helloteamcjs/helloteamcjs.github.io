@@ -54,7 +54,6 @@ wess, 서울.
         { src: "images/graphic/k_heritage.gif", caption: "한옥살림, 2025." }
     ],
     video: [
-        // [추가] 오프닝 시퀀스 디자인 영상 (0-15초)
         { id: "Bgc2LRhFF8o", type: "auto", start: 0, end: 15 },
         { id: "QggYIA_DFVk", type: "auto" },
         { id: "hl3ztDgjXzo", type: "auto" },
@@ -73,6 +72,10 @@ wess, 서울.
             url: "https://chungjinsung.com/"
         }
     ],
-    construct: [],
+    construct: [
+        { src: "images/construct/pipe.webp", caption: "언어의 배반, 2025." },
+        { src: "images/construct/munjado_ajy.webp", caption: "문자조형, 2024.<br>co-worker: 안지용" },
+        { src: "images/construct/activeform.webp", caption: "active form, 2022." }
+    ],
     show: []
 };
