@@ -201,7 +201,6 @@
             align-items: start;
         }
 
-        /* 웹 및 비디오 모달 (1단 세로 구성) */
         .video-content,
         .web-content {
             display: flex;
@@ -382,16 +381,18 @@
                     WORKS_DATA[key].forEach(item => {
                         let html = '';
                         if (key === 'video') {
+                            // [수정] 구간 재생 파라미터 처리 로직
+                            let params = `?enablejsapi=1`;
+                            if (item.start !== undefined) params += `&start=${item.start}`;
+                            if (item.end !== undefined) params += `&end=${item.end}`;
+
                             html = item.type === 'auto'
-                                ? `<div class="video-item"><iframe class="auto-video" src="https://www.youtube.com/embed/${item.id}?enablejsapi=1" allowfullscreen></iframe></div>`
-                                : `<div class="video-item"><a href="https://youtu.be/${item.id}" target="_blank" class="video-link"><img src="https://img.youtube.com/vi/${item.id}/maxresdefault.jpg"></a></div>`;
+                                ? `<div class="video-item"><iframe class="auto-video" src="https://www.youtube.com/embed/${item.id}${params}" allowfullscreen></iframe></div>`
+                                : `<div class="video-item"><a href="https://youtu.be/${item.id}${item.start ? '?t=' + item.start : ''}" target="_blank" class="video-link"><img src="https://img.youtube.com/vi/${item.id}/maxresdefault.jpg"></a></div>`;
                         } else if (key === 'web') {
                             const imgHtml = `<img src="${item.src}" class="work-img">`;
                             const linkedImg = item.url ? `<a href="${item.url}" target="_blank">${imgHtml}</a>` : imgHtml;
-                            html = `<div class="work-item" style="max-width: 800px;">
-                                        ${linkedImg}
-                                        <p class="work-caption">${item.caption}</p>
-                                    </div>`;
+                            html = `<div class="work-item" style="max-width: 800px;">${linkedImg}<p class="work-caption">${item.caption}</p></div>`;
                         } else {
                             html = `<div class="work-item"><img src="${item.src}" class="work-img"><p class="work-caption">${item.caption}</p></div>`;
                         }

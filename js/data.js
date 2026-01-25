@@ -54,6 +54,8 @@ wess, 서울.
         { src: "images/graphic/k_heritage.gif", caption: "한옥살림, 2025." }
     ],
     video: [
+        // [추가] 오프닝 시퀀스 디자인 영상 (0-15초)
+        { id: "Bgc2LRhFF8o", type: "auto", start: 0, end: 15 },
         { id: "QggYIA_DFVk", type: "auto" },
         { id: "hl3ztDgjXzo", type: "auto" },
         { id: "fH7AvIuMuyo", type: "thumb" },
@@ -61,7 +63,7 @@ wess, 서울.
     ],
     web: [
         {
-            src: "images/web/doyouhavethetime.webp", // 나중에 이미지 준비되면 이 경로로 저장하세요
+            src: "images/web/doyouhavethetime.webp",
             caption: "do you have the time? (손목 시계 문자판 가독성과 판독성 비교 실험), 2024.<br>co-worker: 이경미",
             url: "https://doyouhavethetime.vercel.app/"
         },
