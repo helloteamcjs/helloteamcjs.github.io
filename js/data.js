@@ -77,5 +77,9 @@ wess, 서울.
         { src: "images/construct/munjado_ajy.webp", caption: "문자조형, 2024.<br>co-worker: 안지용" },
         { src: "images/construct/activeform.webp", caption: "active form, 2022." }
     ],
-    show: []
+    show: [
+        { src: "images/show/ahwon.webp", caption: "2025, 《la trahison des langages》, 갤러리 아원, 서울." },
+        { src: "images/show/corner.webp", caption: "2024, 《ㅎkㄱr》, 코너 갤러리, 서울." },
+        { src: "images/show/versi.webp", caption: "2023, 《monolog》, 벗이 미술관, 용인." }
+    ]
 };
