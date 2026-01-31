@@ -46,16 +46,15 @@ CICA 미술관, 김포.
     },
     drawing: [],
     painting: [
-        { src: "images/painting/stilllife-7.webp", caption: "untitled, 2020, 한지에 분채, 판넬 배접 -" },
-        { src: "images/painting/stilllife-6.webp", caption: "untitled, 2020, 한지에 분채, 판넬 배접 -" },
-        { src: "images/painting/stilllife-5.webp", caption: "untitled, 2020, 한지에 분채, 판넬 배접 -" },
-        { src: "images/painting/stilllife-4.webp", caption: "untitled, 2020, 한지에 분채, 판넬 배접 -" },
-        { src: "images/painting/stilllife-3.webp", caption: "untitled, 2018, 캔버스에 유채, -" },
-        { src: "images/painting/stilllife-2.webp", caption: "untitled, 2018, 캔버스에 유채, -" },
-        { src: "images/painting/stilllife-1.webp", caption: "춤, 2018, 캔버스에 유채, -" },
-        { src: "images/painting/portrait-3.webp", caption: "초상화, 2017, 캔버스에 유채, -" },
-        { src: "images/painting/portrait-2.webp", caption: "초상화, 2017, 캔버스에 유채, -" },
-        { src: "images/painting/portrait-1.webp", caption: "초상화, 2017, 캔버스에 유채, -" }
+        { src: "images/painting/stilllife-7.webp", caption: "untitled, 2020, 한지에 분채, 판넬 배접, -.", size: 1 },
+        { src: "images/painting/stilllife-6.webp", caption: "untitled, 2020, 한지에 분채, 판넬 배접, -.", size: 1.5 },
+        { src: "images/painting/stilllife-5.webp", caption: "untitled, 2020, 한지에 분채, 판넬 배접, -." },
+        { src: "images/painting/stilllife-4.webp", caption: "untitled, 2020, 한지에 분채, 판넬 배접, -.", break: true },
+        { src: "images/painting/stilllife-3.webp", caption: "untitled, 2018, 캔버스에 유채, -.", size: 1.5 },
+        { src: "images/painting/stilllife-2.webp", caption: "untitled, 2018, 캔버스에 유채, -.", size: 1.5, break: true },
+        { src: "images/painting/stilllife-1.webp", caption: "춤, 2018, 캔버스에 유채, -.", size: 1.5, break: true },
+        { src: "images/painting/portrait-3.webp", caption: "초상화, 2017, 캔버스에 유채, -.", size: 1.5 },
+        { src: "images/painting/portrait-2.webp", caption: "초상화, 2017, 캔버스에 유채, -.", size: 1.5 }
     ],
     graphic: [
         { src: "images/graphic/redhorse.webp", caption: "丙午, 2026." },
