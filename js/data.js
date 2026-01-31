@@ -3,7 +3,7 @@ export const WORKS_DATA = {
     profile: {
         cv: `2024
 서울과학기술대학교,
-시각디자인학과 석사 재학,
+시각디자인학과 석・박사 재학,
 (typography lab), 서울.
 
 2018
@@ -35,7 +35,7 @@ wess, 서울.
 
 2021
 《concept 2021》,
-시카 미술관, 김포.
+CICA 미술관, 김포.
 《cjs mini show at cafe apricot》,
 살구다방, 서울.
 
