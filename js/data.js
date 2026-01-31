@@ -44,8 +44,24 @@ CICA 미술관, 김포.
 살구다방, 서울.`,
         statement: `작품 활동과 함께, 서울과학기술대학교 시각디자인학과 타이포그래피 연구실에서 “타이포그래피의 의미와 구조”에 관한 연구를 진행하고 있다. 작업을 아우르는 핵심 주제는 “언어”와 “이미지”의 “관계”이다. 시각 예술은 항상 이미지로 존재하지만, 그 이미지는 세상에 보이는 순간부터 언어나 기호처럼 작동하게 된다. 초기 작업에선 이러한 작동 원리에 의구심을 갖고 이미지를 ‘언어와 구별된 순수한 대상’으로 분리하고자 하였으나, 이미지가 인식되는 순간 발생하는 언어의 개입을 완전히 차단하는 것에는 번번이 실패하였다. 역설적이게도, 이러한 실패는 두 대상 사이의 불가분한 관계에 관한 호기심으로 이어졌다. 지금은 시각화된 언어로서의 문자와, 물질화된 문자인 활자 등에 주목하고 있다.`
     },
-    drawing: [],
+    drawing: [
+
+    ],
     painting: [
+        { src: "images/painting/munjado-13.webp", caption: "문자도, 2025, 한지에 먹과 아크릴, 판넬 배접, 59.4*84.1cm.", size: 2, break: true },
+        { src: "images/painting/munjado-11.webp", caption: "문자도, 2024, 한지에 아크릴, 판넬 배접, 30*42.2cm.", size: 1.5 },
+        { src: "images/painting/munjado-12.webp", caption: "문자도, 2024, 한지에 아크릴, 판넬 배접, 30*42.2cm.", size: 1.5, break: true },
+        { src: "images/painting/munjado-10.webp", caption: "문자도, 2024, 한지에 먹과 아크릴, 판넬 배접, 50*50cm.", size: 1.5, break: true },
+        { src: "images/painting/kafka.webp", caption: "프란츠 카프카의 변신, 2024, 제소 보드에 아크릴, 30*30cm(*9개).", size: 2, break: true },
+        { src: "images/painting/munjado-1.webp", caption: "문자도, 2023, 한지에 먹과 호분, 판넬 배접, 84.1*59.4cm." },
+        { src: "images/painting/munjado-2.webp", caption: "문자도, 2023, 한지에 먹과 호분, 판넬 배접, 84.1*59.4cm." },
+        { src: "images/painting/munjado-3.webp", caption: "문자도, 2023, 한지에 먹과 호분, 판넬 배접, 84.1*59.4cm." },
+        { src: "images/painting/munjado-4.webp", caption: "문자도, 2023, 한지에 먹과 호분, 판넬 배접, 84.1*59.4cm." },
+        { src: "images/painting/munjado-5.webp", caption: "문자도, 2023, 한지에 먹과 호분, 판넬 배접, 84.1*59.4cm." },
+        { src: "images/painting/munjado-6.webp", caption: "문자도, 2023, 한지에 먹과 호분, 판넬 배접, 84.1*59.4cm." },
+        { src: "images/painting/munjado-7.webp", caption: "문자도, 2023, 한지에 먹과 아크릴, 판넬 배접, 84.1*59.4cm.", break: true },
+        { src: "images/painting/munjado-9.webp", caption: "문자도, 2023, 한지에 먹과 아크릴, 호분, 판넬 배접, 27.5*22cm." },
+        { src: "images/painting/munjado-8.webp", caption: "문자도, 2023, 한지에 먹과 아크릴, 판넬 배접, 25*25cm.", break: true },
         { src: "images/painting/moon.webp", caption: "달, 2022, 한지에 분채, 판넬 배접, 118.9*84.1cm.", size: 1.5 },
         { src: "images/painting/mountain.webp", caption: "산, 2022, 한지에 분채, 판넬 배접, 118.9*84.1cm.", size: 1.5, break: true },
         { src: "images/painting/love.webp", caption: "사랑, 2022, 한지에 분채, 84.1*59.4cm." },
@@ -69,10 +85,6 @@ CICA 미술관, 김포.
         { src: "images/painting/stilllife-6.webp", caption: "untitled, 2020, 한지에 분채, 판넬 배접, -.", size: 1.5 },
         { src: "images/painting/stilllife-5.webp", caption: "untitled, 2020, 한지에 분채, 판넬 배접, -." },
         { src: "images/painting/stilllife-4.webp", caption: "untitled, 2020, 한지에 분채, 판넬 배접, -.", break: true },
-        { src: "images/painting/stilllife-3.webp", caption: "untitled, 2018, 캔버스에 유채, -.", size: 1.5 },
-        { src: "images/painting/stilllife-2.webp", caption: "untitled, 2018, 캔버스에 유채, -.", size: 1.5, break: true },
-        { src: "images/painting/stilllife-1.webp", caption: "춤, 2018, 캔버스에 유채, -.", size: 1.5, break: true },
-        { src: "images/painting/portrait-3.webp", caption: "초상화, 2017, 캔버스에 유채, -.", size: 1.5, break: true },
         { src: "images/painting/portrait-2.webp", caption: "초상화, 2017, 캔버스에 유채, -.", size: 1.5 }
     ],
     graphic: [
