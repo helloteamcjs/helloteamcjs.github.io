@@ -45,7 +45,18 @@ CICA 미술관, 김포.
         statement: `작품 활동과 함께, 서울과학기술대학교 시각디자인학과 타이포그래피 연구실에서 “타이포그래피의 의미와 구조”에 관한 연구를 진행하고 있다. 작업을 아우르는 핵심 주제는 “언어”와 “이미지”의 “관계”이다. 시각 예술은 항상 이미지로 존재하지만, 그 이미지는 세상에 보이는 순간부터 언어나 기호처럼 작동하게 된다. 초기 작업에선 이러한 작동 원리에 의구심을 갖고 이미지를 ‘언어와 구별된 순수한 대상’으로 분리하고자 하였으나, 이미지가 인식되는 순간 발생하는 언어의 개입을 완전히 차단하는 것에는 번번이 실패하였다. 역설적이게도, 이러한 실패는 두 대상 사이의 불가분한 관계에 관한 호기심으로 이어졌다. 지금은 시각화된 언어로서의 문자와, 물질화된 문자인 활자 등에 주목하고 있다.`
     },
     drawing: [],
-    painting: [],
+    painting: [
+        { src: "images/painting/stilllife-7.webp", caption: "untitled, 2020, 한지에 분채, 판넬 배접 -" },
+        { src: "images/painting/stilllife-6.webp", caption: "untitled, 2020, 한지에 분채, 판넬 배접 -" },
+        { src: "images/painting/stilllife-5.webp", caption: "untitled, 2020, 한지에 분채, 판넬 배접 -" },
+        { src: "images/painting/stilllife-4.webp", caption: "untitled, 2020, 한지에 분채, 판넬 배접 -" },
+        { src: "images/painting/stilllife-3.webp", caption: "untitled, 2018, 캔버스에 유채, -" },
+        { src: "images/painting/stilllife-2.webp", caption: "untitled, 2018, 캔버스에 유채, -" },
+        { src: "images/painting/stilllife-1.webp", caption: "춤, 2018, 캔버스에 유채, -" },
+        { src: "images/painting/portrait-3.webp", caption: "초상화, 2017, 캔버스에 유채, -" },
+        { src: "images/painting/portrait-2.webp", caption: "초상화, 2017, 캔버스에 유채, -" },
+        { src: "images/painting/portrait-1.webp", caption: "초상화, 2017, 캔버스에 유채, -" }
+    ],
     graphic: [
         { src: "images/graphic/redhorse.webp", caption: "丙午, 2026." },
         { src: "images/graphic/ahwon_langages.gif", caption: "la trahison des langages, 2025." },
