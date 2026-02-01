@@ -14,6 +14,9 @@ let targetPulseValue = 0;
 
 const INITIAL_CAM_Z = 2.5; const FINAL_CAM_Z = 45; const ZOOM_DURATION = 4.5;
 const COLOR_BLUE = '#0000ff';
+const BLACK_COLOR = new THREE.Color('#000000');
+const BLUE_COLOR = new THREE.Color(COLOR_BLUE);
+
 let hoveredObject = null; let clickedObject = null;
 let isDragging = false;
 let selectedGroupForDrag = null;
@@ -33,6 +36,16 @@ const MODAL_MAP = {
     'construct': 'construct', 'show': 'show'
 };
 
+function createCircleTexture() {
+    const size = 1024;
+    const canvas = document.createElement('canvas'); canvas.width = size; canvas.height = size;
+    const ctx = canvas.getContext('2d');
+    ctx.beginPath(); ctx.arc(size / 2, size / 2, (size / 2) - 20, 0, Math.PI * 2);
+    ctx.fillStyle = 'white'; ctx.fill();
+    return new THREE.CanvasTexture(canvas);
+}
+let circleTexture;
+
 function createDotTexture() {
     const canvas = document.createElement('canvas'); canvas.width = 64; canvas.height = 64;
     const ctx = canvas.getContext('2d'); ctx.beginPath(); ctx.arc(32, 32, 16, 0, Math.PI * 2);
@@ -40,22 +53,19 @@ function createDotTexture() {
 }
 const dotTexture = createDotTexture();
 
-function createPlanetMaterials(name, color = 'black', isInverted = false) {
+function createLabelMaterial(name) {
     const fontSize = (name === '정진성') ? 133 : 200;
     const size = 1024; const canvas = document.createElement('canvas');
     canvas.width = size; canvas.height = size; const ctx = canvas.getContext('2d');
 
-    // [복구] 모든 행성은 흰색 원형 배경을 가짐 (isInverted 예외 제거)
-    ctx.beginPath(); ctx.arc(size / 2, size / 2, (size / 2) - 20, 0, Math.PI * 2);
-    ctx.fillStyle = 'white';
-    ctx.fill();
-
     ctx.lineWidth = (name === '정진성') ? 20 : 30;
-    ctx.strokeStyle = color;
+    ctx.strokeStyle = 'white';
+    ctx.beginPath(); ctx.arc(size / 2, size / 2, (size / 2) - 20, 0, Math.PI * 2);
     ctx.stroke();
 
-    ctx.fillStyle = color;
-    ctx.font = `bold ${fontSize}px "nanumgothiccoding"`;
+    // [핵심 교정] bold 속성 제거하여 일관된 두께 유지
+    ctx.fillStyle = 'white';
+    ctx.font = `${fontSize}px "nanumgothiccoding"`;
     ctx.textBaseline = 'middle';
 
     let displayName = name === 'profile' ? '정진성' : name.toLowerCase();
@@ -75,16 +85,13 @@ function createPlanetMaterials(name, color = 'black', isInverted = false) {
     }
 
     const tex = new THREE.CanvasTexture(canvas);
-    tex.anisotropy = currentRenderer ? currentRenderer.capabilities.getMaxAnisotropy() : 16;
-    tex.minFilter = THREE.LinearMipmapLinearFilter;
-    tex.magFilter = THREE.LinearFilter;
-    tex.generateMipmaps = true;
+    if (currentRenderer) tex.anisotropy = currentRenderer.capabilities.getMaxAnisotropy();
 
     return new THREE.SpriteMaterial({
         map: tex,
+        color: 'black',
         transparent: true,
         depthWrite: false,
-        alphaTest: 0.001,
         sizeAttenuation: false
     });
 }
@@ -109,28 +116,32 @@ const clickableObjects = []; const planetsUpdateFns = []; let controls;
 const raycaster = new THREE.Raycaster(); const mouse = new THREE.Vector2();
 
 function initSystem() {
+    circleTexture = createCircleTexture();
     camera.position.z = INITIAL_CAM_Z;
 
-    const createPlanetPair = (name, scale) => {
-        const matK = createPlanetMaterials(name, 'black', false);
-        const matB = createPlanetMaterials(name, COLOR_BLUE, false); // 파란색 레이어 생성
+    const createPlanetUnit = (name, scale) => {
+        const bgMat = new THREE.SpriteMaterial({
+            map: circleTexture,
+            transparent: true,
+            depthWrite: true,
+            alphaTest: 0.5,
+            sizeAttenuation: false
+        });
+        const bg = new THREE.Sprite(bgMat);
+        bg.scale.set(scale, scale, 1);
+        bg.name = name;
+        bg.renderOrder = 10;
 
-        const base = new THREE.Sprite(matK);
-        base.scale.set(scale, scale, 1);
-        base.name = name;
-        base.renderOrder = 10;
+        const labelMat = createLabelMaterial(name);
+        const label = new THREE.Sprite(labelMat);
+        label.renderOrder = 11;
+        bg.add(label);
 
-        const overlay = new THREE.Sprite(matB);
-        overlay.material.opacity = 0;
-        overlay.renderOrder = 11;
-        base.add(overlay);
-
-        base.userData = { overlay, currentOpacity: 0 };
-        return base;
+        bg.userData = { label, currentRatio: 0 };
+        return bg;
     };
 
-    // '정진성' 행성을 포함한 모든 행성을 동일한 방식으로 생성
-    const sun = createPlanetPair('정진성', 0.18);
+    const sun = createPlanetUnit('정진성', 0.18);
     scene.add(sun); clickableObjects.push(sun);
 
     ORBIT_GROUPS.forEach(group => {
@@ -146,7 +157,7 @@ function initSystem() {
         systemGroup.add(orbitPoints);
 
         group.planets.forEach((name, i) => {
-            const planet = createPlanetPair(name, 0.12);
+            const planet = createPlanetUnit(name, 0.12);
             planet.userData.parentGroup = systemGroup;
             systemGroup.add(planet);
             clickableObjects.push(planet);
@@ -217,7 +228,7 @@ function setupInteractions() {
                 clickedObject = obj; controls.autoRotate = false;
             } else {
                 clickedObject = null; controls.autoRotate = true;
-                targetPulseValue = 1; setTimeout(() => { targetPulseValue = 0; }, 1200);
+                targetPulseValue = 1; setTimeout(() => { targetPulseValue = 0; }, 600);
             }
         }
         isDragging = false; selectedGroupForDrag = null; potentialObjectForDrag = null; controls.enabled = true;
@@ -230,14 +241,9 @@ function animate() {
     clickableObjects.forEach(obj => {
         const isHovered = (obj === hoveredObject || obj === clickedObject);
         const combinedTarget = Math.max(isHovered ? 1 : 0, globalPulseValue);
-        obj.userData.currentOpacity = THREE.MathUtils.lerp(obj.userData.currentOpacity, combinedTarget, 0.1);
-
-        // [핵심 교정] 교차 페이드(Cross-fade) 적용
-        // 검정색 베이스는 투명해지고, 파란색 오버레이는 선명해짐
-        obj.material.opacity = 1 - obj.userData.currentOpacity;
-        if (obj.userData.overlay) {
-            obj.userData.overlay.material.opacity = obj.userData.currentOpacity;
-            obj.userData.overlay.visible = obj.userData.currentOpacity > 0.001;
+        obj.userData.currentRatio = THREE.MathUtils.lerp(obj.userData.currentRatio, combinedTarget, 0.1);
+        if (obj.userData.label) {
+            obj.userData.label.material.color.lerpColors(BLACK_COLOR, BLUE_COLOR, obj.userData.currentRatio);
         }
     });
 
@@ -256,7 +262,8 @@ function animate() {
 }
 
 async function startApp() {
-    try { await document.fonts.load('bold 1rem "nanumgothiccoding"'); } catch (e) { }
+    // [핵심 교정] 일반 두께의 폰트를 로드하여 렌더링 준비
+    try { await document.fonts.load('1rem "nanumgothiccoding"'); } catch (e) { }
     document.getElementById('loading').style.opacity = 0;
     initSystem();
     openingStartTime = Date.now();
