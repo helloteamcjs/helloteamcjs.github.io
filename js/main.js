@@ -61,14 +61,12 @@ function createLabelMaterial(name) {
     const fontSize = (name === '정진성') ? 133 : 200;
     const size = 1024; const canvas = document.createElement('canvas');
     canvas.width = size; canvas.height = size; const ctx = canvas.getContext('2d');
-
     ctx.lineWidth = (name === '정진성') ? 12.83 : 19.25;
     ctx.strokeStyle = 'white';
     ctx.beginPath(); ctx.arc(size / 2, size / 2, (size / 2) - 20, 0, Math.PI * 2);
     ctx.stroke();
-
     ctx.fillStyle = 'white';
-    ctx.font = `${fontSize}px "nanumgothiccoding"`; // Regular 두께 유지
+    ctx.font = `${fontSize}px "nanumgothiccoding"`;
     ctx.textBaseline = 'middle';
 
     let displayName = name === 'profile' ? '정진성' : name.toLowerCase();
@@ -86,33 +84,20 @@ function createLabelMaterial(name) {
     } else {
         ctx.textAlign = 'center'; ctx.fillText(displayName, size / 2, size / 2 + fontSize * 0.05);
     }
-
     const tex = new THREE.CanvasTexture(canvas);
     if (currentRenderer) tex.anisotropy = currentRenderer.capabilities.getMaxAnisotropy();
-
-    return new THREE.SpriteMaterial({
-        map: tex,
-        color: 'black',
-        transparent: true,
-        depthWrite: false,
-        sizeAttenuation: false
-    });
+    return new THREE.SpriteMaterial({ map: tex, color: 'black', transparent: true, depthWrite: false, sizeAttenuation: false });
 }
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xffffff);
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-const renderer = new THREE.WebGLRenderer({
-    antialias: true,
-    powerPreference: "high-performance",
-    alpha: true
-});
+const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance", alpha: true });
 currentRenderer = renderer;
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.sortObjects = true;
-
 document.body.appendChild(renderer.domElement);
 
 function initSystem() {
@@ -120,23 +105,15 @@ function initSystem() {
     camera.position.z = INITIAL_CAM_Z;
 
     const createPlanetUnit = (name, scale) => {
-        const bgMat = new THREE.SpriteMaterial({
-            map: circleTexture,
-            transparent: true,
-            depthWrite: true,
-            alphaTest: 0.5,
-            sizeAttenuation: false
-        });
+        const bgMat = new THREE.SpriteMaterial({ map: circleTexture, transparent: true, depthWrite: true, alphaTest: 0.5, sizeAttenuation: false });
         const bg = new THREE.Sprite(bgMat);
         bg.scale.set(scale, scale, 1);
         bg.name = name;
         bg.renderOrder = 10;
-
         const labelMat = createLabelMaterial(name);
         const label = new THREE.Sprite(labelMat);
         label.renderOrder = 11;
         bg.add(label);
-
         bg.userData = { label, currentRatio: 0 };
         return bg;
     };
@@ -148,35 +125,21 @@ function initSystem() {
         const systemGroup = new THREE.Group();
         systemGroup.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
         scene.add(systemGroup);
-
         const orbitPoints = new THREE.Points(
             new THREE.BufferGeometry().setFromPoints(new THREE.EllipseCurve(0, 0, group.radius, group.radius).getPoints(group.radius * 10)),
-            new THREE.PointsMaterial({
-                color: 0x000000,
-                map: dotTexture,
-                size: 0.35,
-                transparent: true,
-                depthWrite: false,
-                opacity: 1
-            })
+            new THREE.PointsMaterial({ color: 0x000000, map: dotTexture, size: 0.35, transparent: true, depthWrite: false, opacity: 1 })
         );
         orbitPoints.renderOrder = 0;
         systemGroup.add(orbitPoints);
         orbitObjects.push(orbitPoints);
-
         group.planets.forEach((name, i) => {
             const planet = createPlanetUnit(name, 0.12);
             planet.userData.parentGroup = systemGroup;
             systemGroup.add(planet);
             clickableObjects.push(planet);
-
             const angle = (i / group.planets.length) * Math.PI * 2;
             planetsUpdateFns.push(() => {
-                planet.position.set(
-                    Math.cos(angle + Date.now() * 0.001 * group.speed * 10) * group.radius,
-                    Math.sin(angle + Date.now() * 0.001 * group.speed * 10) * group.radius,
-                    0
-                );
+                planet.position.set(Math.cos(angle + Date.now() * 0.001 * group.speed * 10) * group.radius, Math.sin(angle + Date.now() * 0.001 * group.speed * 10) * group.radius, 0);
             });
         });
     });
@@ -236,9 +199,7 @@ function setupInteractions() {
                 clickedObject = obj; controls.autoRotate = false;
             } else {
                 clickedObject = null; controls.autoRotate = true;
-                targetPulseValue = 1;
-                // 파란색 정점 유지 시간 (1.2초)
-                setTimeout(() => { targetPulseValue = 0; }, 1200);
+                targetPulseValue = 1; setTimeout(() => { targetPulseValue = 0; }, 1200);
             }
         }
         isDragging = false; selectedGroupForDrag = null; potentialObjectForDrag = null; controls.enabled = true;
@@ -248,34 +209,34 @@ function setupInteractions() {
 function animate() {
     requestAnimationFrame(animate);
 
-    // [핵심 교정] Lerp 대신 고정 속도(pulseSpeed) 시스템으로 전면 개편
-    const pulseSpeed = 0.018; // 프레임당 변화량 (값이 작을수록 느려짐)
+    // [핵심 교정] 모바일 대응 위치 오프셋 로직
+    // 화면 너비 768px 이하일 때만 타겟을 왼쪽 위로 이동시켜 행성계를 우측 하단으로 밀어냄
+    const isMobile = window.innerWidth <= 768;
+    const targetOffsetX = isMobile ? -8 : 0;
+    const targetOffsetY = isMobile ? 6 : 0;
 
-    // globalPulseValue 업데이트: target에 도달할 때까지 매 프레임 고정값만큼 가감
+    // OrbitControls의 타겟을 부드럽게 이동시킴 (lerp)
+    controls.target.x = THREE.MathUtils.lerp(controls.target.x, targetOffsetX, 0.05);
+    controls.target.y = THREE.MathUtils.lerp(controls.target.y, targetOffsetY, 0.05);
+
+    const pulseSpeed = 0.018;
     if (globalPulseValue < targetPulseValue) {
         globalPulseValue = Math.min(targetPulseValue, globalPulseValue + pulseSpeed);
     } else if (globalPulseValue > targetPulseValue) {
         globalPulseValue = Math.max(targetPulseValue, globalPulseValue - pulseSpeed);
     }
 
-    orbitObjects.forEach(orbit => {
-        orbit.material.opacity = 1 - globalPulseValue;
-    });
+    orbitObjects.forEach(orbit => { orbit.material.opacity = 1 - globalPulseValue; });
 
     clickableObjects.forEach(obj => {
         const isHovered = (obj === hoveredObject || obj === clickedObject);
         const combinedTarget = Math.max(isHovered ? 1 : 0, globalPulseValue);
-
-        // 행성 색상 비율(currentRatio)도 동일한 고정 속도로 업데이트
         if (obj.userData.currentRatio < combinedTarget) {
             obj.userData.currentRatio = Math.min(combinedTarget, obj.userData.currentRatio + pulseSpeed);
         } else if (obj.userData.currentRatio > combinedTarget) {
             obj.userData.currentRatio = Math.max(combinedTarget, obj.userData.currentRatio - pulseSpeed);
         }
-
-        if (obj.userData.label) {
-            obj.userData.label.material.color.lerpColors(BLACK_COLOR, BLUE_COLOR, obj.userData.currentRatio);
-        }
+        if (obj.userData.label) { obj.userData.label.material.color.lerpColors(BLACK_COLOR, BLUE_COLOR, obj.userData.currentRatio); }
     });
 
     if (isOpening && openingStartTime) {
