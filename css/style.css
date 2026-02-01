@@ -4,7 +4,7 @@ body {
     padding: 0;
     overflow: hidden;
     background-color: #ffffff;
-    /* [복구] 순수 화이트 배경 */
+    /* 순수 화이트 배경 복구 */
     word-break: keep-all;
     overflow-wrap: break-word;
     -webkit-user-select: none;
@@ -36,6 +36,10 @@ canvas {
     display: block;
     opacity: 0;
     transition: opacity 3.0s ease-in-out;
+    /* 사파리 성능 최적화: 하드웨어 가속 힌트 */
+    will-change: transform, opacity;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
 #loading {
@@ -171,8 +175,9 @@ a {
     width: 100vw;
     height: 100vh;
     background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
+    /* 사파리 호환을 위한 벤더 프리픽스 추가 */
     -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
     opacity: 0;
     pointer-events: none;
     visibility: hidden;

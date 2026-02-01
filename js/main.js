@@ -4,6 +4,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 let currentRenderer;
 export function setPerformanceMode(isModalOpen) {
     if (!currentRenderer) return;
+    // [사파리 최적화] 모달 오픈 시 픽셀 밀도를 1로 낮춰 부하를 최소화
     const ratio = isModalOpen ? 1 : Math.min(window.devicePixelRatio, 2);
     currentRenderer.setPixelRatio(ratio);
 }
@@ -84,12 +85,22 @@ function createPlanetMaterials(name, color = 'black', isInverted = false) {
 }
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xffffff); // [복구] 쓰리제이에스 배경을 흰색으로 고정
+scene.background = new THREE.Color(0xffffff);
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ antialias: true }); // [복구] alpha: true 제거
+
+// [사파리 최적화] 렌더러 설정 강화
+const renderer = new THREE.WebGLRenderer({
+    antialias: true,
+    powerPreference: "high-performance" // 고성능 모드 명시
+});
 currentRenderer = renderer;
 
-renderer.setSize(window.innerWidth, window.innerHeight); renderer.setPixelRatio(window.devicePixelRatio);
+// [사파리 최적화] 픽셀 밀도를 최대 2로 제한 (사파리의 3~4배 밀도 방지)
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+// 투명 물체 정렬 강제 (사파리 겹침 노이즈 방지)
+renderer.sortObjects = true;
+
 document.body.appendChild(renderer.domElement);
 
 const clickableObjects = []; const planetsUpdateFns = []; let controls;
@@ -219,12 +230,8 @@ function setupInteractions() {
             } else {
                 clickedObject = null;
                 controls.autoRotate = true;
-
-                // 행성 깜빡임 트리거 (배경 그라데이션 관련 클래스 제어는 삭제됨)
                 targetPulseValue = 1;
-                setTimeout(() => {
-                    targetPulseValue = 0;
-                }, 600);
+                setTimeout(() => { targetPulseValue = 0; }, 600);
             }
         }
         isDragging = false; selectedGroupForDrag = null; potentialObjectForDrag = null; controls.enabled = true;
@@ -234,20 +241,19 @@ function setupInteractions() {
 function animate() {
     requestAnimationFrame(animate);
 
-    // [핵심] 보간 속도(0.05)를 낮추어 '서서히' 원상복구되는 리듬을 만듭니다.
-    globalPulseValue = THREE.MathUtils.lerp(globalPulseValue, targetPulseValue, 0.05);
+    globalPulseValue = THREE.MathUtils.lerp(globalPulseValue, targetPulseValue, 0.1);
 
     clickableObjects.forEach(obj => {
         const isHovered = (obj === hoveredObject || obj === clickedObject);
-        const hoverTarget = isHovered ? 1 : 0;
+        const combinedTarget = Math.max(isHovered ? 1 : 0, globalPulseValue);
 
-        const combinedTarget = Math.max(hoverTarget, globalPulseValue);
-
-        // 투명도 변화 보간 속도 조절
-        obj.userData.currentOpacity = THREE.MathUtils.lerp(obj.userData.currentOpacity, combinedTarget, 0.08);
+        // [사파리 부드러움 개선] 보간 속도를 더 미세하게 조정
+        obj.userData.currentOpacity = THREE.MathUtils.lerp(obj.userData.currentOpacity, combinedTarget, 0.06);
 
         if (obj.userData.overlay) {
             obj.userData.overlay.material.opacity = obj.userData.currentOpacity;
+            // 0에 가깝다면 렌더링 제외하여 성능 확보
+            obj.userData.overlay.visible = obj.userData.currentOpacity > 0.001;
         }
     });
 
