@@ -15,7 +15,9 @@ let targetPulseValue = 0;
 const INITIAL_CAM_Z = 2.5; const FINAL_CAM_Z = 45; const ZOOM_DURATION = 4.5;
 const COLOR_BLUE = '#0000ff';
 let hoveredObject = null; let clickedObject = null;
-let isDragging = false; let selectedGroupForDrag = null;
+let isDragging = false;
+let selectedGroupForDrag = null;
+let potentialObjectForDrag = null;
 let mouseDownPosition = { x: 0, y: 0 };
 const CLICK_THRESHOLD = 5;
 
@@ -72,21 +74,21 @@ function createPlanetMaterials(name, color = 'black', isInverted = false) {
     }
     const tex = new THREE.CanvasTexture(canvas); tex.anisotropy = 16;
 
-    // [핵심 수정] depthWrite: false 설정을 통해 투명한 테두리의 시각적 노이즈를 제거합니다.
     return new THREE.SpriteMaterial({
         map: tex,
         transparent: true,
         depthWrite: false,
-        alphaTest: 0.01,
+        alphaTest: 0.001,
         sizeAttenuation: false
     });
 }
 
 const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xffffff); // [복구] 쓰리제이에스 배경을 흰색으로 고정
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+const renderer = new THREE.WebGLRenderer({ antialias: true }); // [복구] alpha: true 제거
 currentRenderer = renderer;
-renderer.setClearColor(0x000000, 0);
+
 renderer.setSize(window.innerWidth, window.innerHeight); renderer.setPixelRatio(window.devicePixelRatio);
 document.body.appendChild(renderer.domElement);
 
@@ -155,12 +157,31 @@ function setupInteractions() {
     window.addEventListener('pointerdown', (e) => {
         if (document.querySelector('canvas').classList.contains('modal-active')) return;
         if (isOpening) { isOpening = false; camera.position.z = FINAL_CAM_Z; }
-        mouseDownPosition = { x: e.clientX, y: e.clientY }; isDragging = false;
+
+        mouseDownPosition = { x: e.clientX, y: e.clientY };
+        isDragging = false;
+
+        mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+        raycaster.setFromCamera(mouse, camera);
+
+        const intersects = raycaster.intersectObjects(clickableObjects);
+        if (intersects.length > 0) {
+            potentialObjectForDrag = intersects[0].object;
+        } else {
+            potentialObjectForDrag = null;
+        }
     });
 
     window.addEventListener('pointermove', (e) => {
         if (document.querySelector('canvas').classList.contains('modal-active')) return;
         const dist = Math.hypot(e.clientX - mouseDownPosition.x, e.clientY - mouseDownPosition.y);
+
+        if (!isDragging && potentialObjectForDrag && dist > CLICK_THRESHOLD) {
+            isDragging = true;
+            controls.enabled = false;
+            selectedGroupForDrag = potentialObjectForDrag.userData.parentGroup;
+        }
 
         mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
@@ -170,10 +191,6 @@ function setupInteractions() {
         if (intersects.length > 0) {
             document.body.style.cursor = 'pointer';
             hoveredObject = intersects[0].object;
-            if (isDragging && dist > CLICK_THRESHOLD) {
-                isDragging = true; controls.enabled = false;
-                selectedGroupForDrag = hoveredObject.userData.parentGroup;
-            }
         } else {
             document.body.style.cursor = 'default';
             hoveredObject = null;
@@ -203,28 +220,31 @@ function setupInteractions() {
                 clickedObject = null;
                 controls.autoRotate = true;
 
+                // 행성 깜빡임 트리거 (배경 그라데이션 관련 클래스 제어는 삭제됨)
                 targetPulseValue = 1;
-                document.body.classList.add('pulse-active');
                 setTimeout(() => {
                     targetPulseValue = 0;
-                    document.body.classList.remove('pulse-active');
-                }, 1200);
+                }, 600);
             }
         }
-        isDragging = false; selectedGroupForDrag = null; controls.enabled = true;
+        isDragging = false; selectedGroupForDrag = null; potentialObjectForDrag = null; controls.enabled = true;
     });
 }
 
 function animate() {
     requestAnimationFrame(animate);
 
-    globalPulseValue = THREE.MathUtils.lerp(globalPulseValue, targetPulseValue, 0.15);
+    // [핵심] 보간 속도(0.05)를 낮추어 '서서히' 원상복구되는 리듬을 만듭니다.
+    globalPulseValue = THREE.MathUtils.lerp(globalPulseValue, targetPulseValue, 0.05);
 
     clickableObjects.forEach(obj => {
-        const isSelected = (obj === hoveredObject || obj === clickedObject);
-        const target = (isSelected || globalPulseValue > 0.01) ? 1 : 0;
+        const isHovered = (obj === hoveredObject || obj === clickedObject);
+        const hoverTarget = isHovered ? 1 : 0;
 
-        obj.userData.currentOpacity = THREE.MathUtils.lerp(obj.userData.currentOpacity, target, 0.1);
+        const combinedTarget = Math.max(hoverTarget, globalPulseValue);
+
+        // 투명도 변화 보간 속도 조절
+        obj.userData.currentOpacity = THREE.MathUtils.lerp(obj.userData.currentOpacity, combinedTarget, 0.08);
 
         if (obj.userData.overlay) {
             obj.userData.overlay.material.opacity = obj.userData.currentOpacity;
