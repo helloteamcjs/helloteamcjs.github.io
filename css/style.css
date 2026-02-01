@@ -3,7 +3,8 @@ body {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #ffffff;
+    /* 하단 파란색 강조 및 빠른 페이드 아웃 (작가님 요청 수치 적용) */
+    background: linear-gradient(to top, rgba(0, 0, 255, 0.12) 0%, rgba(255, 255, 255, 0) 18%), #ffffff;
     word-break: keep-all;
     overflow-wrap: break-word;
     -webkit-user-select: none;
@@ -11,6 +12,31 @@ body {
     -ms-user-select: none;
     user-select: none;
     cursor: default;
+    position: relative;
+    /* 가상 요소 배치를 위한 기준점 */
+}
+
+/* [2. 배경 맥동(Pulse) 효과 고도화] */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* 기본 배경보다 조금 더 짙고 넓게 퍼지는 파란색 */
+    background: linear-gradient(to top, rgba(0, 0, 255, 0.2) 0%, rgba(255, 255, 255, 0) 35%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1.2s ease-in-out;
+    /* 2.5초 동안 서서히 변화 */
+    z-index: -1;
+    /* 캔버스 뒤에 배치 */
+}
+
+/* 배경 클릭 시 클래스가 추가되면 서서히 나타남 */
+body.pulse-active::after {
+    opacity: 1;
 }
 
 img {
@@ -47,7 +73,7 @@ canvas {
     font-size: 0.85rem;
 }
 
-/* [2. 타이포그래피 및 링크 스타일] */
+/* [3. 타이포그래피 및 링크 스타일] */
 .link-style,
 a,
 .top-email,
@@ -105,7 +131,7 @@ a,
     white-space: pre-line;
 }
 
-/* [3. 사이드바 설정] */
+/* [4. 사이드바 설정] */
 .sidebar {
     position: fixed;
     left: 60px;
@@ -162,7 +188,7 @@ a {
     opacity: 1;
 }
 
-/* [4. 모달 시스템 및 유동적 그리드] */
+/* [5. 모달 시스템 및 유동적 그리드] */
 .modal {
     position: fixed;
     top: 0;
@@ -218,17 +244,14 @@ a {
     justify-items: start;
     font-size: 0.85rem;
     line-height: 1.6;
-    /* 축소 시 오른쪽으로 자연스럽게 컨텐츠가 연결되도록 auto-fill 사용 */
     grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
 }
 
-/* 프로필 전용 3단 고정 레이아웃 */
 .profile-layout {
     grid-template-columns: repeat(3, 1fr) !important;
     max-width: 1400px !important;
 }
 
-/* [5. 작가 소개글 정밀 교정: 왼쪽 정렬 유지] */
 .column-intro {
     font-size: 0.85rem;
     line-height: 1.75;
@@ -236,9 +259,7 @@ a {
     word-break: keep-all;
     overflow-wrap: break-word;
     text-align: left;
-    /* 왼쪽 정렬 유지 */
     text-wrap: pretty;
-    /* 마지막 줄의 어색한 끊김(Orphans) 방지 */
 }
 
 /* [6. 작업물 배치 및 반응형 설정] */
