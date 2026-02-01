@@ -58,11 +58,17 @@ const UIManager = {
                         ? `<div class="video-item"><iframe class="auto-video" src="https://www.youtube.com/embed/${item.id}${params}" allowfullscreen></iframe></div>`
                         : `<div class="video-item"><a href="https://youtu.be/${item.id}${item.start ? '?t=' + item.start : ''}" target="_blank"><img src="https://img.youtube.com/vi/${item.id}/maxresdefault.jpg" loading="lazy"></a></div>`;
                 } else if (key === 'web' || key === 'construct' || key === 'show') {
-                    contentHtml += `<div class="work-item" style="max-width: 800px;">${item.url ? `<a href="${item.url}" target="_blank">` : ''}<img src="${item.src}" class="work-img" loading="lazy">${item.url ? `</a>` : ''}<p class="work-caption">${item.caption}</p></div>`;
+                    // [수정] 캡션이 있을 때만 렌더링
+                    const caption = item.caption ? `<p class="work-caption">${item.caption}</p>` : '';
+                    contentHtml += `<div class="work-item" style="max-width: 800px;">${item.url ? `<a href="${item.url}" target="_blank">` : ''}<img src="${item.src}" class="work-img" loading="lazy">${item.url ? `</a>` : ''}${caption}</div>`;
                 } else {
                     let span = 2;
                     if (item.size === 1.5) span = 3; else if (item.size === 2) span = 4; else if (item.size === 3) span = 6;
-                    contentHtml += `<div class="work-item w${span}"><div class="img-container"><img src="${item.src}" class="work-img" loading="lazy"></div><p class="work-caption">${item.caption}</p></div>${item.break ? `<div class="grid-breaker"></div>` : ''}`;
+
+                    // [핵심 수정 지점] item.caption이 존재(truthy)할 때만 캡션 HTML 생성
+                    const caption = item.caption ? `<p class="work-caption">${item.caption}</p>` : '';
+
+                    contentHtml += `<div class="work-item w${span}"><div class="img-container"><img src="${item.src}" class="work-img" loading="lazy"></div>${caption}</div>${item.break ? `<div class="grid-breaker"></div>` : ''}`;
                 }
             });
         }
