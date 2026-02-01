@@ -4,8 +4,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 let currentRenderer;
 export function setPerformanceMode(isModalOpen) {
     if (!currentRenderer) return;
-    // [사파리 최적화] 모달 오픈 시 픽셀 밀도를 1로 낮춰 부하를 최소화
-    const ratio = isModalOpen ? 1 : Math.min(window.devicePixelRatio, 2);
+    const ratio = window.devicePixelRatio || 1;
     currentRenderer.setPixelRatio(ratio);
 }
 
@@ -46,15 +45,16 @@ function createPlanetMaterials(name, color = 'black', isInverted = false) {
     const size = 1024; const canvas = document.createElement('canvas');
     canvas.width = size; canvas.height = size; const ctx = canvas.getContext('2d');
 
+    // [복구] 모든 행성은 흰색 원형 배경을 가짐 (isInverted 예외 제거)
     ctx.beginPath(); ctx.arc(size / 2, size / 2, (size / 2) - 20, 0, Math.PI * 2);
-    ctx.fillStyle = isInverted ? color : 'white';
+    ctx.fillStyle = 'white';
     ctx.fill();
 
     ctx.lineWidth = (name === '정진성') ? 20 : 30;
     ctx.strokeStyle = color;
     ctx.stroke();
 
-    ctx.fillStyle = isInverted ? 'white' : color;
+    ctx.fillStyle = color;
     ctx.font = `bold ${fontSize}px "nanumgothiccoding"`;
     ctx.textBaseline = 'middle';
 
@@ -73,7 +73,12 @@ function createPlanetMaterials(name, color = 'black', isInverted = false) {
     } else {
         ctx.textAlign = 'center'; ctx.fillText(displayName, size / 2, size / 2 + fontSize * 0.05);
     }
-    const tex = new THREE.CanvasTexture(canvas); tex.anisotropy = 16;
+
+    const tex = new THREE.CanvasTexture(canvas);
+    tex.anisotropy = currentRenderer ? currentRenderer.capabilities.getMaxAnisotropy() : 16;
+    tex.minFilter = THREE.LinearMipmapLinearFilter;
+    tex.magFilter = THREE.LinearFilter;
+    tex.generateMipmaps = true;
 
     return new THREE.SpriteMaterial({
         map: tex,
@@ -88,17 +93,14 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xffffff);
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-// [사파리 최적화] 렌더러 설정 강화
 const renderer = new THREE.WebGLRenderer({
     antialias: true,
-    powerPreference: "high-performance" // 고성능 모드 명시
+    powerPreference: "high-performance",
+    alpha: true
 });
 currentRenderer = renderer;
-
-// [사파리 최적화] 픽셀 밀도를 최대 2로 제한 (사파리의 3~4배 밀도 방지)
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
-// 투명 물체 정렬 강제 (사파리 겹침 노이즈 방지)
 renderer.sortObjects = true;
 
 document.body.appendChild(renderer.domElement);
@@ -109,9 +111,9 @@ const raycaster = new THREE.Raycaster(); const mouse = new THREE.Vector2();
 function initSystem() {
     camera.position.z = INITIAL_CAM_Z;
 
-    const createPlanetPair = (name, scale, isSun = false) => {
+    const createPlanetPair = (name, scale) => {
         const matK = createPlanetMaterials(name, 'black', false);
-        const matB = createPlanetMaterials(name, COLOR_BLUE, isSun);
+        const matB = createPlanetMaterials(name, COLOR_BLUE, false); // 파란색 레이어 생성
 
         const base = new THREE.Sprite(matK);
         base.scale.set(scale, scale, 1);
@@ -127,7 +129,8 @@ function initSystem() {
         return base;
     };
 
-    const sun = createPlanetPair('정진성', 0.18, false);
+    // '정진성' 행성을 포함한 모든 행성을 동일한 방식으로 생성
+    const sun = createPlanetPair('정진성', 0.18);
     scene.add(sun); clickableObjects.push(sun);
 
     ORBIT_GROUPS.forEach(group => {
@@ -143,7 +146,7 @@ function initSystem() {
         systemGroup.add(orbitPoints);
 
         group.planets.forEach((name, i) => {
-            const planet = createPlanetPair(name, 0.12, false);
+            const planet = createPlanetPair(name, 0.12);
             planet.userData.parentGroup = systemGroup;
             systemGroup.add(planet);
             clickableObjects.push(planet);
@@ -168,36 +171,25 @@ function setupInteractions() {
     window.addEventListener('pointerdown', (e) => {
         if (document.querySelector('canvas').classList.contains('modal-active')) return;
         if (isOpening) { isOpening = false; camera.position.z = FINAL_CAM_Z; }
-
         mouseDownPosition = { x: e.clientX, y: e.clientY };
         isDragging = false;
-
         mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
         raycaster.setFromCamera(mouse, camera);
-
         const intersects = raycaster.intersectObjects(clickableObjects);
-        if (intersects.length > 0) {
-            potentialObjectForDrag = intersects[0].object;
-        } else {
-            potentialObjectForDrag = null;
-        }
+        if (intersects.length > 0) potentialObjectForDrag = intersects[0].object;
     });
 
     window.addEventListener('pointermove', (e) => {
         if (document.querySelector('canvas').classList.contains('modal-active')) return;
         const dist = Math.hypot(e.clientX - mouseDownPosition.x, e.clientY - mouseDownPosition.y);
-
         if (!isDragging && potentialObjectForDrag && dist > CLICK_THRESHOLD) {
-            isDragging = true;
-            controls.enabled = false;
+            isDragging = true; controls.enabled = false;
             selectedGroupForDrag = potentialObjectForDrag.userData.parentGroup;
         }
-
         mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
         raycaster.setFromCamera(mouse, camera);
-
         const intersects = raycaster.intersectObjects(clickableObjects);
         if (intersects.length > 0) {
             document.body.style.cursor = 'pointer';
@@ -206,7 +198,6 @@ function setupInteractions() {
             document.body.style.cursor = 'default';
             hoveredObject = null;
         }
-
         if (isDragging && selectedGroupForDrag) {
             selectedGroupForDrag.rotation.y += e.movementX * 0.005;
             selectedGroupForDrag.rotation.x += e.movementY * 0.005;
@@ -216,22 +207,17 @@ function setupInteractions() {
     window.addEventListener('pointerup', (e) => {
         if (document.querySelector('canvas').classList.contains('modal-active')) return;
         const finalDist = Math.hypot(e.clientX - mouseDownPosition.x, e.clientY - mouseDownPosition.y);
-
         if (!isDragging && finalDist < CLICK_THRESHOLD) {
             raycaster.setFromCamera(mouse, camera);
             const intersects = raycaster.intersectObjects(clickableObjects);
-
             if (intersects.length > 0) {
                 const obj = intersects[0].object;
                 const target = MODAL_MAP[obj.name];
                 if (window.openModal && target) window.openModal(target);
-                clickedObject = obj;
-                controls.autoRotate = false;
+                clickedObject = obj; controls.autoRotate = false;
             } else {
-                clickedObject = null;
-                controls.autoRotate = true;
-                targetPulseValue = 1;
-                setTimeout(() => { targetPulseValue = 0; }, 600);
+                clickedObject = null; controls.autoRotate = true;
+                targetPulseValue = 1; setTimeout(() => { targetPulseValue = 0; }, 1200);
             }
         }
         isDragging = false; selectedGroupForDrag = null; potentialObjectForDrag = null; controls.enabled = true;
@@ -240,19 +226,17 @@ function setupInteractions() {
 
 function animate() {
     requestAnimationFrame(animate);
-
     globalPulseValue = THREE.MathUtils.lerp(globalPulseValue, targetPulseValue, 0.1);
-
     clickableObjects.forEach(obj => {
         const isHovered = (obj === hoveredObject || obj === clickedObject);
         const combinedTarget = Math.max(isHovered ? 1 : 0, globalPulseValue);
+        obj.userData.currentOpacity = THREE.MathUtils.lerp(obj.userData.currentOpacity, combinedTarget, 0.1);
 
-        // [사파리 부드러움 개선] 보간 속도를 더 미세하게 조정
-        obj.userData.currentOpacity = THREE.MathUtils.lerp(obj.userData.currentOpacity, combinedTarget, 0.06);
-
+        // [핵심 교정] 교차 페이드(Cross-fade) 적용
+        // 검정색 베이스는 투명해지고, 파란색 오버레이는 선명해짐
+        obj.material.opacity = 1 - obj.userData.currentOpacity;
         if (obj.userData.overlay) {
             obj.userData.overlay.material.opacity = obj.userData.currentOpacity;
-            // 0에 가깝다면 렌더링 제외하여 성능 확보
             obj.userData.overlay.visible = obj.userData.currentOpacity > 0.001;
         }
     });
@@ -266,7 +250,6 @@ function animate() {
             if (t === 1) isOpening = false;
         }
     }
-
     planetsUpdateFns.forEach(fn => fn());
     controls.update();
     renderer.render(scene, camera);
@@ -285,6 +268,7 @@ window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
 });
 
 startApp();
