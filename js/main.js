@@ -36,6 +36,10 @@ const MODAL_MAP = {
     'construct': 'construct', 'show': 'show'
 };
 
+const clickableObjects = []; const planetsUpdateFns = []; const orbitObjects = [];
+let controls;
+const raycaster = new THREE.Raycaster(); const mouse = new THREE.Vector2();
+
 function createCircleTexture() {
     const size = 1024;
     const canvas = document.createElement('canvas'); canvas.width = size; canvas.height = size;
@@ -58,14 +62,13 @@ function createLabelMaterial(name) {
     const size = 1024; const canvas = document.createElement('canvas');
     canvas.width = size; canvas.height = size; const ctx = canvas.getContext('2d');
 
-    ctx.lineWidth = (name === '정진성') ? 20 : 30;
+    ctx.lineWidth = (name === '정진성') ? 12.83 : 19.25;
     ctx.strokeStyle = 'white';
     ctx.beginPath(); ctx.arc(size / 2, size / 2, (size / 2) - 20, 0, Math.PI * 2);
     ctx.stroke();
 
-    // [핵심 교정] bold 속성 제거하여 일관된 두께 유지
     ctx.fillStyle = 'white';
-    ctx.font = `${fontSize}px "nanumgothiccoding"`;
+    ctx.font = `${fontSize}px "nanumgothiccoding"`; // Regular 두께 유지
     ctx.textBaseline = 'middle';
 
     let displayName = name === 'profile' ? '정진성' : name.toLowerCase();
@@ -112,9 +115,6 @@ renderer.sortObjects = true;
 
 document.body.appendChild(renderer.domElement);
 
-const clickableObjects = []; const planetsUpdateFns = []; let controls;
-const raycaster = new THREE.Raycaster(); const mouse = new THREE.Vector2();
-
 function initSystem() {
     circleTexture = createCircleTexture();
     camera.position.z = INITIAL_CAM_Z;
@@ -151,10 +151,18 @@ function initSystem() {
 
         const orbitPoints = new THREE.Points(
             new THREE.BufferGeometry().setFromPoints(new THREE.EllipseCurve(0, 0, group.radius, group.radius).getPoints(group.radius * 10)),
-            new THREE.PointsMaterial({ color: 0x000000, map: dotTexture, size: 0.35, transparent: true, depthWrite: false })
+            new THREE.PointsMaterial({
+                color: 0x000000,
+                map: dotTexture,
+                size: 0.35,
+                transparent: true,
+                depthWrite: false,
+                opacity: 1
+            })
         );
         orbitPoints.renderOrder = 0;
         systemGroup.add(orbitPoints);
+        orbitObjects.push(orbitPoints);
 
         group.planets.forEach((name, i) => {
             const planet = createPlanetUnit(name, 0.12);
@@ -228,7 +236,9 @@ function setupInteractions() {
                 clickedObject = obj; controls.autoRotate = false;
             } else {
                 clickedObject = null; controls.autoRotate = true;
-                targetPulseValue = 1; setTimeout(() => { targetPulseValue = 0; }, 600);
+                targetPulseValue = 1;
+                // 파란색 정점 유지 시간 (1.2초)
+                setTimeout(() => { targetPulseValue = 0; }, 1200);
             }
         }
         isDragging = false; selectedGroupForDrag = null; potentialObjectForDrag = null; controls.enabled = true;
@@ -237,11 +247,32 @@ function setupInteractions() {
 
 function animate() {
     requestAnimationFrame(animate);
-    globalPulseValue = THREE.MathUtils.lerp(globalPulseValue, targetPulseValue, 0.1);
+
+    // [핵심 교정] Lerp 대신 고정 속도(pulseSpeed) 시스템으로 전면 개편
+    const pulseSpeed = 0.018; // 프레임당 변화량 (값이 작을수록 느려짐)
+
+    // globalPulseValue 업데이트: target에 도달할 때까지 매 프레임 고정값만큼 가감
+    if (globalPulseValue < targetPulseValue) {
+        globalPulseValue = Math.min(targetPulseValue, globalPulseValue + pulseSpeed);
+    } else if (globalPulseValue > targetPulseValue) {
+        globalPulseValue = Math.max(targetPulseValue, globalPulseValue - pulseSpeed);
+    }
+
+    orbitObjects.forEach(orbit => {
+        orbit.material.opacity = 1 - globalPulseValue;
+    });
+
     clickableObjects.forEach(obj => {
         const isHovered = (obj === hoveredObject || obj === clickedObject);
         const combinedTarget = Math.max(isHovered ? 1 : 0, globalPulseValue);
-        obj.userData.currentRatio = THREE.MathUtils.lerp(obj.userData.currentRatio, combinedTarget, 0.1);
+
+        // 행성 색상 비율(currentRatio)도 동일한 고정 속도로 업데이트
+        if (obj.userData.currentRatio < combinedTarget) {
+            obj.userData.currentRatio = Math.min(combinedTarget, obj.userData.currentRatio + pulseSpeed);
+        } else if (obj.userData.currentRatio > combinedTarget) {
+            obj.userData.currentRatio = Math.max(combinedTarget, obj.userData.currentRatio - pulseSpeed);
+        }
+
         if (obj.userData.label) {
             obj.userData.label.material.color.lerpColors(BLACK_COLOR, BLUE_COLOR, obj.userData.currentRatio);
         }
@@ -262,7 +293,6 @@ function animate() {
 }
 
 async function startApp() {
-    // [핵심 교정] 일반 두께의 폰트를 로드하여 렌더링 준비
     try { await document.fonts.load('1rem "nanumgothiccoding"'); } catch (e) { }
     document.getElementById('loading').style.opacity = 0;
     initSystem();
