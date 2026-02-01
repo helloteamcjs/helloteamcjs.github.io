@@ -127,7 +127,7 @@ function initSystem() {
         return base;
     };
 
-    const sun = createPlanetPair('정진성', 0.18, true);
+    const sun = createPlanetPair('정진성', 0.18, false);
     scene.add(sun); clickableObjects.push(sun);
 
     ORBIT_GROUPS.forEach(group => {

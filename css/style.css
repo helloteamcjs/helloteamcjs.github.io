@@ -6,10 +6,12 @@ body {
     background-color: #ffffff;
     word-break: keep-all;
     overflow-wrap: break-word;
+    /* 모바일 터치 하이라이트 방해 요소 제거 및 기본 인터랙션 허용 */
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    -webkit-tap-highlight-color: transparent;
     cursor: default;
 }
 
@@ -27,17 +29,20 @@ span {
     overflow-wrap: break-word;
 }
 
-canvas.modal-active {
-    pointer-events: none;
-}
-
+/* 행성 캔버스 스타일: 터치 및 드래그 반응을 위해 pointer-events 보존 */
 canvas {
     display: block;
     opacity: 0;
-    transition: opacity 3.0s ease-in-out;
+    transition: opacity 3.0s ease-in-out, color 0.4s ease;
     will-change: transform, opacity;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+    z-index: 1;
+}
+
+/* 모달이 활성화되었을 때만 행성 클릭 차단 */
+canvas.modal-active {
+    pointer-events: none;
 }
 
 #loading {
@@ -63,15 +68,18 @@ a,
     cursor: pointer;
 }
 
-/* [기본 설정 유지] 이메일, 클로즈 버튼은 파란색 고정 */
+/* [복구] 상호작용 하이라이트: 선택된 요소나 행성을 파랗게 표시 */
 .link-style,
 a,
 .top-email,
-.modal-close {
+.modal-close,
+.selected,
+/* 행성 하이라이트 클래스 */
+.active-planet {
     color: #0000ff !important;
 }
 
-/* [인스타그램 전용] 기본 검정색, 호버 시에만 파란색 */
+/* [인스타그램 전용] 작가님 요청: 기본 검정, 호버 시에만 파랑 */
 .top-instagram {
     color: #0000ff !important;
     background: none;
@@ -83,20 +91,13 @@ a,
     position: absolute;
     top: 40px;
     left: 60px;
-    z-index: 1002;
-    transition: opacity 0.4s ease, color 0.4s ease;
+    z-index: 11;
+    /* 배경 레이어: 모달(1000)보다 아래 */
+    transition: color 0.4s ease;
 }
 
 .top-instagram:hover {
     color: #0000ff !important;
-}
-
-/* [핵심 제어] 어떤 모달이든 열리면 인스타그램 버튼을 완전히 제거/은닉 */
-body:has(.modal.active) .top-instagram,
-.modal.active~.top-instagram {
-    opacity: 0 !important;
-    pointer-events: none !important;
-    visibility: hidden !important;
 }
 
 .top-email {
@@ -110,6 +111,7 @@ body:has(.modal.active) .top-instagram,
     top: 40px;
     left: 60px;
     z-index: 1002;
+    /* 모달 위 레이어 */
 }
 
 .modal-footer {
