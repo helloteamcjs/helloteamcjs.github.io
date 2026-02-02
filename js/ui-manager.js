@@ -54,20 +54,20 @@ const UIManager = {
                 if (key === 'video') {
                     let params = `?enablejsapi=1`;
                     if (item.start !== undefined) params += `&start=${item.start}`; if (item.end !== undefined) params += `&end=${item.end}`;
-                    contentHtml += item.type === 'auto'
-                        ? `<div class="video-item"><iframe class="auto-video" src="https://www.youtube.com/embed/${item.id}${params}" allowfullscreen></iframe></div>`
-                        : `<div class="video-item"><a href="https://youtu.be/${item.id}${item.start ? '?t=' + item.start : ''}" target="_blank"><img src="https://img.youtube.com/vi/${item.id}/maxresdefault.jpg" loading="lazy"></a></div>`;
+
+                    const media = item.type === 'auto'
+                        ? `<iframe class="auto-video" src="https://www.youtube.com/embed/${item.id}${params}" allowfullscreen></iframe>`
+                        : `<a href="https://youtu.be/${item.id}${item.start ? '?t=' + item.start : ''}" target="_blank"><img src="https://img.youtube.com/vi/${item.id}/maxresdefault.jpg" loading="lazy"></a>`;
+
+                    const caption = item.caption ? `<p class="work-caption">${item.caption}</p>` : '';
+                    contentHtml += `<div class="video-item"><div class="video-wrapper">${media}</div>${caption}</div>`;
                 } else if (key === 'web' || key === 'construct' || key === 'show') {
-                    // [수정] 캡션이 있을 때만 렌더링
                     const caption = item.caption ? `<p class="work-caption">${item.caption}</p>` : '';
                     contentHtml += `<div class="work-item" style="max-width: 800px;">${item.url ? `<a href="${item.url}" target="_blank">` : ''}<img src="${item.src}" class="work-img" loading="lazy">${item.url ? `</a>` : ''}${caption}</div>`;
                 } else {
                     let span = 2;
                     if (item.size === 1.5) span = 3; else if (item.size === 2) span = 4; else if (item.size === 3) span = 6;
-
-                    // [핵심 수정 지점] item.caption이 존재(truthy)할 때만 캡션 HTML 생성
                     const caption = item.caption ? `<p class="work-caption">${item.caption}</p>` : '';
-
                     contentHtml += `<div class="work-item w${span}"><div class="img-container"><img src="${item.src}" class="work-img" loading="lazy"></div>${caption}</div>${item.break ? `<div class="grid-breaker"></div>` : ''}`;
                 }
             });

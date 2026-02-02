@@ -139,15 +139,15 @@ CICA 미술관, 김포.
         { src: "images/graphic/redhorse.webp", caption: "丙午, 2026." },
         { src: "images/graphic/ahwon_langages.gif", caption: "la trahison des langages, 2025." },
         { src: "images/graphic/kafka.webp", caption: "Franz Kafka, 2023." },
-        { src: "images/graphic/circlelovestriangle.webp", caption: "circle loves triangle, 2026" },
+        { src: "images/graphic/circlelovestriangle.webp", caption: "circle loves triangle, 2026." },
         { src: "images/graphic/k_heritage.gif", caption: "한옥살림, 2025." }
     ],
     video: [
-        { id: "Bgc2LRhFF8o", type: "auto", start: 0, end: 15 },
-        { id: "QggYIA_DFVk", type: "auto" },
-        { id: "hl3ztDgjXzo", type: "auto" },
-        { id: "fH7AvIuMuyo", type: "thumb" },
-        { id: "KAMuP1_MOks", type: "auto" }
+        { id: "Bgc2LRhFF8o", caption: "국제앰네스티: 당신에게 닿을지도 몰라, 오프닝 시퀀스 제작, 2026.", type: "auto", start: 0, end: 15 },
+        { id: "QggYIA_DFVk", caption: "문자조형(작품 제작 과정 기록), 영상 제작, 2024.", type: "auto" },
+        { id: "hl3ztDgjXzo", caption: "블루메 미술관: blume table, 영상 편집, 2022.", type: "auto" },
+        { id: "fH7AvIuMuyo", caption: "포스코: posco playlist_colde, 영상 편집, 2023.", type: "thumb" },
+        { id: "KAMuP1_MOks", caption: "eyes of designer, 영상 제작, 2024.", type: "auto" }
     ],
     web: [
         {
