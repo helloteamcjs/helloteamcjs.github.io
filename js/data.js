@@ -106,8 +106,6 @@ CICA 미술관, 김포.
         { src: "images/drawing/a-2.webp", break: true },
         { src: "images/drawing/t-3.webp", size: 1.5 },
         { src: "images/drawing/t-2.webp", size: 1.5 },
-        { src: "images/drawing/t-1.webp", size: 1.5 },
-        { src: "images/drawing/c-4.webp", size: 1.5 },
         { src: "images/drawing/c-6.webp", break: true },
         { src: "images/drawing/c-7.webp" },
         { src: "images/drawing/c-5.webp", size: 1.5 }
