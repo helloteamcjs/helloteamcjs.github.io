@@ -161,10 +161,10 @@ CICA 미술관, 김포.
         { src: "images/graphic/covid.webp", caption: "covid-19, 2020." },
         { src: "images/graphic/typo2017.webp", caption: "typography project, 2017.", break: true },
         { src: "images/graphic/ho.webp", caption: "ho workshop, 브랜드 아이덴티티 디자인, 2020.", size: 2 },
-        { src: "images/graphic/woriginal.webp", caption: "인사이드 리릭스, 타이틀 디자인, 2022.", size: 1.5 },
-        { src: "images/graphic/corea.webp", caption: "corea, 브랜드 아이덴티티 디자인, 2024.", size: 1.5 },
         { src: "images/graphic/bulgasari.webp", caption: "불가사리, 그래픽 디자인, 2023.", size: 1.5 },
-        { src: "images/graphic/goindol.webp", caption: "고인돌, 그래픽 디자인, 2020.", size: 1.5 }
+        { src: "images/graphic/woriginal.webp", caption: "인사이드 리릭스, 타이틀 디자인, 2022.", size: 1.5 },
+        { src: "images/graphic/corea.webp", caption: "corea espresso, 브랜드 아이덴티티 디자인, 2024.", size: 2 },
+        { src: "images/graphic/goindol.webp", caption: "진달래섬 고인돌, 그래픽 디자인, 2020.", size: 1.5 }
     ],
     video: [
         { id: "Bgc2LRhFF8o", caption: "국제앰네스티: 당신에게 닿을지도 몰라, 타이틀 디자인, 오프닝 시퀀스 제작, 2026.", type: "auto", start: 0, end: 15 },
