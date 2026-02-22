@@ -157,6 +157,7 @@ CICA 미술관, 김포.
         { src: "images/graphic/k_heritage.gif", caption: "《한옥살림》, 2025." },
         { src: "images/graphic/kafka.webp", caption: "Franz Kafka, 2023." },
         { src: "images/graphic/tirano.webp", caption: "《따오기, 눈 오는 서울, 건축가의 의자》, 2022." },
+        { src: "images/graphic/bat.webp", caption: "福, 2021." },
         { src: "images/graphic/covid.webp", caption: "covid-19, 2020." },
         { src: "images/graphic/typo2017.webp", caption: "typography project, 2017.", break: true },
         { src: "images/graphic/ho.webp", caption: "ho workshop, brand identity, 2020.", size: 2, break: true },
