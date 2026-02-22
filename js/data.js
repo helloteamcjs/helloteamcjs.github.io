@@ -164,8 +164,9 @@ CICA 미술관, 김포.
         { src: "images/graphic/mobydicktitle.webp", caption: "백경, moby dick, title design, 2026.", size: 1.5 },
         { src: "images/graphic/amnesty.webp", caption: "당신에게 닿을지도 몰라, title design, 2025.", size: 2 },
         { src: "images/graphic/woriginal.webp", caption: "인사이드 리릭스, title design, 2022.", size: 1.5, break: true },
-        { src: "images/graphic/bulgasari.webp", caption: "불가사리, team graphic, 2023.", size: 1.5 },
+        { src: "images/graphic/hanok.webp", caption: "한옥살림, key visual, 2025.", size: 1.5 },
         { src: "images/graphic/corea.webp", caption: "corea espresso, brand identity, 2024.", size: 2 },
+        { src: "images/graphic/bulgasari.webp", caption: "불가사리, team graphic, 2023.", size: 1.5 },
         { src: "images/graphic/goindol.webp", caption: "진달래섬 고인돌, key visual, 2020.", size: 1.5 }
     ],
     video: [
