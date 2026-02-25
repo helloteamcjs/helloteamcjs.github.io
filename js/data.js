@@ -3,7 +3,7 @@ export const WORKS_DATA = {
     profile: {
         cv: `2024
 서울과학기술대학교, 서울,
-시각디자인학과 석・박사 재학.
+시각디자인학과 석・박사 과정 재학.
 (typography lab)
 
 2018
