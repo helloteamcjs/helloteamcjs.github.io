@@ -74,32 +74,45 @@ a,
     color: #0000ff !important;
 }
 
-.top-instagram {
-    color: #0000ff !important;
-    background: none;
-    border: none;
-    padding: 0;
-    font-family: 'nanumgothiccoding', monospace;
-    font-size: 0.85rem;
-    text-transform: lowercase;
+/* 통합된 좌상단 인터페이스 레이아웃 */
+.top-interface {
     position: absolute;
     top: 40px;
     left: 60px;
-    z-index: 11;
-    transition: color 0.4s ease;
+    z-index: 1100;
+    /* 모달 위로 배치 */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    /* 두 줄 사이 간격 */
 }
 
-.top-email {
+/* 개별 스타일 유지 및 조정 */
+.top-email,
+.top-instagram {
+    position: static;
+    /* absolute 해제 */
     background: none;
     border: none;
     padding: 0;
     font-family: 'nanumgothiccoding', monospace;
     font-size: 0.85rem;
     text-transform: lowercase;
-    position: absolute;
-    top: 40px;
-    left: 60px;
-    z-index: 1002;
+    text-align: left;
+    color: #0000ff !important;
+    /* 작가님 기존의 파란색 유지 */
+    text-decoration: underline !important;
+    text-underline-position: from-font !important;
+    cursor: pointer;
+}
+
+/* 모바일 대응 (325행 부근의 기존 top-email, top-instagram 관련은 삭제) */
+@media (max-width: 600px) {
+    .top-interface {
+        top: 20px;
+        left: 20px;
+    }
 }
 
 .modal-footer {
