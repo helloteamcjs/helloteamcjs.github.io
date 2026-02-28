@@ -27,6 +27,12 @@
 
 <body>
     <div id="loading">hello world</div>
+
+    <div class="top-interface">
+        <button class="top-email" id="email-text">helloteamcjs@gmail.com</button>
+        <a href="https://www.instagram.com/chungjinsung/" target="_blank" class="top-instagram">instagram</a>
+    </div>
+
     <div class="sidebar">
         <div class="sidebar-content">
             <p>안녕하세요 ? <span class="link-style" id="intro-kor-btn">정진성</span>입니다</p>
@@ -45,54 +51,51 @@
         </div>
     </div>
 
-    <div class="top-interface">
-        <button class="top-email" id="email-text">helloteamcjs@gmail.com</button>
-        <a href="https://www.instagram.com/chungjinsung/" target="_blank" class="top-instagram">instagram</a>
-    </div>
-
-    <div id="profile-modal" class="modal"><button class="modal-close" data-modal="profile-modal">close</button>
+    <div id="profile-modal" class="modal">
+        <button class="modal-close" data-modal="profile-modal">close</button>
         <div class="modal-scroll-area">
-            <div class="modal-content profile-layout" id="profile-render"></div>
-        </div>
-    </div>
-    <div id="drawing-modal" class="modal"><button class="modal-close" data-modal="drawing-modal">close</button>
-        <div class="modal-scroll-area">
-            <div class="modal-content" id="drawing-render"></div>
+            <div id="profile-render" class="modal-content profile-layout"></div>
         </div>
     </div>
     <div id="painting-modal" class="modal"><button class="modal-close" data-modal="painting-modal">close</button>
         <div class="modal-scroll-area">
-            <div class="modal-content" id="painting-render"></div>
+            <div id="painting-render" class="modal-content"></div>
+        </div>
+    </div>
+    <div id="drawing-modal" class="modal"><button class="modal-close" data-modal="drawing-modal">close</button>
+        <div class="modal-scroll-area">
+            <div id="drawing-render" class="modal-content"></div>
         </div>
     </div>
     <div id="graphic-modal" class="modal"><button class="modal-close" data-modal="graphic-modal">close</button>
         <div class="modal-scroll-area">
-            <div class="modal-content" id="graphic-render"></div>
+            <div id="graphic-render" class="modal-content"></div>
         </div>
     </div>
     <div id="video-modal" class="modal"><button class="modal-close" data-modal="video-modal">close</button>
-        <div class="modal-scroll-area" id="video-scroll-container">
-            <div class="video-content" id="video-render"></div>
+        <div id="video-scroll-container" class="modal-scroll-area">
+            <div id="video-render" class="video-content"></div>
         </div>
     </div>
     <div id="web-modal" class="modal"><button class="modal-close" data-modal="web-modal">close</button>
         <div class="modal-scroll-area">
-            <div class="web-content" id="web-render"></div>
+            <div id="web-render" class="web-content"></div>
         </div>
     </div>
     <div id="construct-modal" class="modal"><button class="modal-close" data-modal="construct-modal">close</button>
         <div class="modal-scroll-area">
-            <div class="construct-content" id="construct-render"></div>
+            <div id="construct-render" class="construct-content"></div>
         </div>
     </div>
     <div id="show-modal" class="modal"><button class="modal-close" data-modal="show-modal">close</button>
         <div class="modal-scroll-area">
-            <div class="show-content" id="show-render"></div>
+            <div id="show-render" class="show-content"></div>
         </div>
     </div>
 
-    <script
-        type="importmap"> { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/" } } </script>
+    <script type="importmap">
+        { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/" } }
+    </script>
     <script type="module" src="js/ui-manager.js"></script>
     <script type="module" src="js/main.js"></script>
 </body>

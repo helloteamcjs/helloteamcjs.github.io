@@ -6,6 +6,8 @@ const UIManager = {
     bindEvents() {
         document.getElementById('intro-kor-btn')?.addEventListener('click', () => this.toggleIntro('kor'));
         document.getElementById('intro-eng-btn')?.addEventListener('click', () => this.toggleIntro('eng'));
+
+        // [보존] 메인 페이지에 통합된 이메일 복사 기능
         const emailBtn = document.getElementById('email-text');
         if (emailBtn) {
             emailBtn.onclick = () => {
@@ -14,6 +16,7 @@ const UIManager = {
                 setTimeout(() => { emailBtn.innerText = "helloteamcjs@gmail.com"; emailBtn.classList.remove('selected'); }, 1500);
             };
         }
+
         document.querySelectorAll('.modal-close').forEach(btn => {
             btn.addEventListener('click', (e) => this.closeModal(e.target.dataset.modal));
         });
@@ -59,6 +62,7 @@ const UIManager = {
                         ? `<iframe class="auto-video" src="https://www.youtube.com/embed/${item.id}${params}" allowfullscreen></iframe>`
                         : `<a href="https://youtu.be/${item.id}${item.start ? '?t=' + item.start : ''}" target="_blank"><img src="https://img.youtube.com/vi/${item.id}/maxresdefault.jpg" loading="lazy"></a>`;
 
+                    // [보존] 비디오 캡션 렌더링 로직
                     const caption = item.caption ? `<p class="work-caption">${item.caption}</p>` : '';
                     contentHtml += `<div class="video-item"><div class="video-wrapper">${media}</div>${caption}</div>`;
                 } else if (key === 'web' || key === 'construct' || key === 'show') {
