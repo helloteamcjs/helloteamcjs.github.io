@@ -179,7 +179,7 @@ CICA 미술관, 김포.
     web: [
         {
             src: "images/web/type.webp",
-            caption: "movable type (interactive typography workshop), 2026.<br>co-worker: google gemini",
+            caption: "활자, movable type (typography workshop), 2026.<br>co-worker: google gemini",
             url: "https://chungjinsung.com/movabletype/"
         },
         {
