@@ -178,6 +178,11 @@ CICA 미술관, 김포.
     ],
     web: [
         {
+            src: "images/web/type.webp",
+            caption: "movable type (interactive typography workshop), 2026.<br>co-worker: google gemini",
+            url: "https://chungjinsung.com/movabletype/"
+        },
+        {
             src: "images/web/time.webp",
             caption: "do you have the time? (손목 시계 문자판 가독성과 판독성 비교 실험), 2024.<br>co-worker: 이경미",
             url: "https://doyouhavethetime.vercel.app/"
