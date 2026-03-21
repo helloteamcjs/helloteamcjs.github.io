@@ -160,7 +160,7 @@ CICA 미술관, 김포.
         { src: "images/graphic/bat.webp", caption: "福, 2021." },
         { src: "images/graphic/covid.webp", caption: "covid-19, 2020." },
         { src: "images/graphic/typo2017.webp", caption: "typography project, 2017.", break: true },
-        { src: "images/graphic/ho.webp", caption: "ho workshop, brand identity, 2020.", size: 2, break: true },
+        { src: "images/graphic/ho.webp", caption: "ho workshop, brand identity, 2020.", size: 2 },
         { src: "images/graphic/type.webp", caption: "Type, lettering, 2026.", size: 2, break: true },
         { src: "images/graphic/mobydicktitle.webp", caption: "〈백경, moby dick〉, title design, 2026.", size: 1.5 },
         { src: "images/graphic/amnesty.webp", caption: "〈당신에게 닿을지도 몰라〉, title design, 2025.", size: 2 },
