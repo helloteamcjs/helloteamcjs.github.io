@@ -12,7 +12,7 @@ const UIManager = {
         if (emailBtn) {
             emailBtn.onclick = () => {
                 navigator.clipboard.writeText("helloteamcjs@gmail.com");
-                emailBtn.innerText = "copied !"; emailBtn.classList.add('selected');
+                emailBtn.innerText = "copied!"; emailBtn.classList.add('selected');
                 setTimeout(() => { emailBtn.innerText = "helloteamcjs@gmail.com"; emailBtn.classList.remove('selected'); }, 1500);
             };
         }
