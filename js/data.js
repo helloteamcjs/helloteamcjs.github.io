@@ -1,24 +1,18 @@
 /* [js/data.js] 작가님의 모든 텍스트 및 이미지 데이터 집약 파일 */
 export const WORKS_DATA = {
     profile: {
-        cv: `2024
+        cv: `2024-
 서울과학기술대학교, 서울,
 시각디자인학과 석・박사 과정 재학.
 (typography lab)
 
-2018
+2012-2018
 가천대학교, 성남,
 시각디자인과 학사.
 
 2022
 벗이 미술관, 용인,
-창작 레지던시 입주.
-
-참고자료
-〈디자인 매거진 ca #260〉, 인터뷰.
-
-visualsfrom (video production)
-mv 연출・미술.`,
+창작 레지던시 입주.`,
         exhibition: `2025
 《la trahison des langages》,
 갤러리 아원, 서울.
