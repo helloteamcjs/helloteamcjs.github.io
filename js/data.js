@@ -197,6 +197,7 @@ CICA 미술관, 김포.
         }
     ],
     construct: [
+        { src: "images/construct/kim.webp", caption: " 김양숙, 金良淑, kimyangsook, 2026." },
         { src: "images/construct/pipe.webp", caption: "언어의 배반, 2025." },
         { src: "images/construct/munjado_ajy.webp", caption: "문자조형, 2024.<br>co-worker: 안지용" },
         { src: "images/construct/activeform.webp", caption: "active form, 2022." }
