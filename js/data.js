@@ -159,7 +159,6 @@ CICA 미술관, 김포.
         { src: "images/graphic/bat.webp", caption: "福, 2021." },
         { src: "images/graphic/covid.webp", caption: "covid-19, 2020." },
         { src: "images/graphic/typo2017.webp", caption: "typography project, 2017.", break: true },
-        { src: "images/graphic/kim-01.webp", caption: "김양숙, 金良淑, kimyangsook, 2026.", size: 3, break: true },
         { src: "images/graphic/ho.webp", caption: "ho workshop, brand identity, 2020.", size: 2 },
         { src: "images/graphic/type.webp", caption: "Type, lettering, 2026.", size: 2, break: true },
         { src: "images/graphic/mobydicktitle.webp", caption: "〈백경, moby dick〉, title design, 2026.", size: 1.5 },
@@ -195,7 +194,7 @@ CICA 미술관, 김포.
         }
     ],
     construct: [
-        { src: "images/construct/kim.webp", caption: " 김양숙, 金良淑, kimyangsook, 2026." },
+        { src: "images/construct/kim-2.webp", caption: " 김양숙, 金良淑, kimyangsook, 2026." },
         { src: "images/construct/pipe.webp", caption: "언어의 배반, 2025." },
         { src: "images/construct/munjado_ajy.webp", caption: "문자조형, 2024.<br>co-worker: 안지용" },
         { src: "images/construct/activeform.webp", caption: "active form, 2022." }
