@@ -147,6 +147,7 @@ CICA 미술관, 김포.
         { src: "images/painting/portrait-2.webp", caption: "초상화, 2017, 캔버스에 유채, -.", size: 1.5 }
     ],
     graphic: [
+        { src: "images/graphic/htsaw.gif", caption: "《전시하는 법》, 2026." },
         { src: "images/graphic/wrdr.gif", caption: "쓰기와 그리기, 2026." },
         { src: "images/graphic/mobydick.webp", caption: "〈백경〉, 2026." },
         { src: "images/graphic/pungnyu.webp", caption: "《풍류의 정원》, 2026." },
