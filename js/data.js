@@ -195,7 +195,7 @@ CICA 미술관, 김포.
         }
     ],
     construct: [
-        { src: "images/construct/type.webp", caption: "살아있는 글자, 2026.<br>co-worker: 구정민" },
+        { src: "images/construct/type.webp", caption: "살아 있는 글자, 2026.<br>co-worker: 구정민" },
         { src: "images/construct/kim-2.webp", caption: "김양숙, 金良淑, kimyangsook, 2026." },
         { src: "images/construct/pipe.webp", caption: "언어의 배반, 2025." },
         { src: "images/construct/munjado_ajy.webp", caption: "문자조형, 2024.<br>co-worker: 안지용" },
