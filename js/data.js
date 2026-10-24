@@ -11,7 +11,7 @@ export const WORKS_DATA = {
 창작 레지던시 입주.
 
 2020-2023
-visualsfrom,
+visualsfrom, 서울,
 영상 미술・디자인.
 
 2012-2018
