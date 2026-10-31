@@ -151,6 +151,7 @@ CICA 미술관, 김포.
         { src: "images/painting/portrait-2.webp", caption: "초상화, 2017, 캔버스에 유채, -.", size: 1.5 }
     ],
     graphic: [
+        { src: "images/graphic/openschool.webp", caption: "《서울과학기술대학교 오픈스쿨》, 2026." },
         { src: "images/graphic/calendar.webp", caption: "2027 calendar, 2026." },
         { src: "images/graphic/htsaw.gif", caption: "《전시하는 법》, 2026." },
         { src: "images/graphic/sds.webp", caption: "《salon de séochon》, 2026." },
