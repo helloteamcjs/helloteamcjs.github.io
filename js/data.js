@@ -1,7 +1,11 @@
 /* [js/data.js] 작가님의 모든 텍스트 및 이미지 데이터 집약 파일 */
 export const WORKS_DATA = {
     profile: {
-        cv: `2024-
+        cv: `2025-
+teamCJS, 서울,
+그래픽디자인 스튜디오 운영.
+
+2024-
 서울과학기술대학교, 서울,
 시각디자인학과 석・박사 과정 재학.
 (typography lab)
