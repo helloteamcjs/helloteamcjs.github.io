@@ -2,48 +2,48 @@
 export const WORKS_DATA = {
     profile: {
         cv: `2025-
-teamCJS, 서울,
-그래픽디자인 스튜디오 운영.
+            team cjs, 서울,
+            그래픽디자인 스튜디오 운영.
 
-2024-
-서울과학기술대학교, 서울,
-시각디자인학과 석・박사 과정 재학.
-(typography lab)
+            2024-
+            서울과학기술대학교, 서울,
+            시각디자인학과 석・박사 과정 재학.
+            (typography lab)
 
-2022
-벗이 미술관, 용인,
-창작 레지던시 입주.
+            2022
+            벗이 미술관, 용인,
+            창작 레지던시 입주.
 
-2020-2023
-visualsfrom, 서울,
-영상 미술・디자인.
+            2020-2023
+            visualsfrom, 서울,
+            영상 미술・디자인.
 
-2012-2018
-가천대학교, 성남,
-시각디자인과 학사.`,
+            2012-2018
+            가천대학교, 성남,
+            시각디자인과 학사.`,
         exhibition: `2025
-《la trahison des langages》,
-갤러리 아원, 서울.
+            《la trahison des langages》,
+            갤러리 아원, 서울.
 
-2024
-《ㅎkㄱr》,
-코너 갤러리, 서울.
+            2024
+            《ㅎkㄱr》,
+            코너 갤러리, 서울.
 
-2023
-《monolog》,
-벗이 미술관, 용인.
-《kill time trash》 (비디오 아트 상영회),
-wess, 서울.
+            2023
+            《monolog》,
+            벗이 미술관, 용인.
+            《kill time trash》 (비디오 아트 상영회),
+            wess, 서울.
 
-2021
-《concept 2021》,
-CICA 미술관, 김포.
-《cjs mini show at cafe apricot》,
-살구다방, 서울.
+            2021
+            《concept 2021》,
+            CICA 미술관, 김포.
+            《cjs mini show at cafe apricot》,
+            살구다방, 서울.
 
-2019
-《chungjinsung, cafe apricot》,
-살구다방, 서울.`,
+            2019
+            《chungjinsung, cafe apricot》,
+            살구다방, 서울.`,
         statement: `
         
         
