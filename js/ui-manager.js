@@ -4,6 +4,10 @@ import { setPerformanceMode } from './main.js';
 const UIManager = {
     init() { this.bindEvents(); },
     bindEvents() {
+        // 이미지 요소에 대해서만 우클릭 차단
+        document.addEventListener('contextmenu', (e) => {
+            if (e.target.tagName === 'IMG') e.preventDefault();
+        });
         document.getElementById('intro-kor-btn')?.addEventListener('click', () => this.toggleIntro('kor'));
         document.getElementById('intro-eng-btn')?.addEventListener('click', () => this.toggleIntro('eng'));
 
